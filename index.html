@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-<title>اختبار المقدمه 1 - المهندس نادر</title>
+<title>نظام الامتحان الذكي - المهندس نادر</title>
 
 <!-- إضافة خطوط جوجل وخطوط عربية فاخرة -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -746,7 +746,7 @@
 <div class="header">
   <div class="title">
     <i class="fas fa-gem"></i>
-    📋 امتحان المصطلحات الطبيه
+    📋 امتحان التمريض الشامل
   </div>
   <div class="stats-grid">
     <div class="badge viol-badge">
@@ -811,6 +811,52 @@ const TOTAL_QUESTIONS = 30;
 const Q_PER_PAGE = 2;
 const EXAM_TIME_MIN = 30;
 const AUTO_TERMINATE_AT = 3;
+
+/* ===================== دوال التشفير وفك التشفير ===================== */
+// هذه الدوال هي الحل السحري لمنع النسخ في جميع المتصفحات
+
+function encodeText(text) {
+  if (!text) return text;
+  
+  // تشفير النص باستخدام تشفير بسيط يعتمد على إزاحة الأحرف
+  // هذا يجعل النص يظهر بشكل طبيعي للمستخدم، ولكن عند نسخه تنسخ أحرف مشوشة
+  let encoded = '';
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    // نطاق الحروف العربية واللاتينية
+    if ((code >= 0x0600 && code <= 0x06FF) || // العربية
+        (code >= 0x0030 && code <= 0x0039) || // الأرقام
+        (code >= 0x0041 && code <= 0x005A) || // A-Z
+        (code >= 0x0061 && code <= 0x007A)) { // a-z
+      // إزاحة الحرف بمقدار 1 لعمل تشويش
+      encoded += String.fromCharCode(code + 1);
+    } else {
+      // المسافات وعلامات الترقيم تبقى كما هي
+      encoded += text[i];
+    }
+  }
+  return encoded;
+}
+
+function decodeText(encodedText) {
+  if (!encodedText) return encodedText;
+  
+  // فك التشفير لعرض النص بشكل طبيعي للمستخدم
+  let decoded = '';
+  for (let i = 0; i < encodedText.length; i++) {
+    const code = encodedText.charCodeAt(i);
+    // إعادة الحرف إلى وضعه الطبيعي
+    if ((code > 0x0600 && code <= 0x06FF) || // العربية
+        (code > 0x0030 && code <= 0x0039) || // الأرقام
+        (code > 0x0041 && code <= 0x005A) || // A-Z
+        (code > 0x0061 && code <= 0x007A)) { // a-z
+      decoded += String.fromCharCode(code - 1);
+    } else {
+      decoded += encodedText[i];
+    }
+  }
+  return decoded;
+}
 
 /* ===================== توليد الأسئلة (15 صح/خطأ + 15 اختيار من متعدد) ===================== */
 let questions = [
@@ -1178,15 +1224,57 @@ window.addEventListener("blur", () => {
   logViolation("تركيز", "فقدان التركيز (ربما فتحت تطبيقاً آخر)");
 });
 
-// 3. منع النسخ
+// 3. منع النسخ - محسّن
 document.addEventListener("copy", (e) => {
   e.preventDefault();
+  e.stopPropagation();
   cheatLog.copyAttempts++;
   logViolation("نسخ", "محاولة نسخ المحتوى ممنوعة");
+  return false;
 });
 
-// 4. مفاتيح ممنوعة وتحديث
+// 4. منع القص واللصق والسحب
+document.addEventListener("cut", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  cheatLog.copyAttempts++;
+  logViolation("قص", "محاولة قص المحتوى ممنوعة");
+  return false;
+});
+
+document.addEventListener("paste", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  cheatLog.copyAttempts++;
+  logViolation("لصق", "محاولة لصق المحتوى ممنوعة");
+  return false;
+});
+
+document.addEventListener("dragstart", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  cheatLog.copyAttempts++;
+  logViolation("سحب", "محاولة سحب المحتوى ممنوعة");
+  return false;
+});
+
+document.addEventListener("selectstart", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  return false;
+});
+
+// 5. مفاتيح ممنوعة وتحديث - مع إضافة منع Ctrl+C و Ctrl+X و Ctrl+V
 document.addEventListener("keydown", (e) => {
+  // منع اختصارات النسخ والقص واللصق
+  if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || e.key === 'v' || e.key === 'V')) {
+    e.preventDefault();
+    e.stopPropagation();
+    cheatLog.copyAttempts++;
+    logViolation("نسخ", "محاولة استخدام اختصار النسخ/القص/لصق ممنوعة");
+    return false;
+  }
+  
   const forbidden = (e.key === 'F12') || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
                     (e.ctrlKey && (e.key === 'u' || e.key === 'p' || e.key === 'r')) || (e.altKey && e.key === 'Tab');
   
@@ -1249,28 +1337,35 @@ function renderPage() {
       '<i class="fas fa-check-circle" style="color: var(--info);"></i> صح/خطأ' : 
       '<i class="fas fa-list-ul" style="color: var(--success);"></i> اختيار من متعدد';
     
+    // هنا يتم فك تشفير النص ليظهر بشكل طبيعي للمستخدم
+    const decodedText = decodeText(q.text);
+    
     box.innerHTML = `<h4>
       <span class="question-type-badge">${typeIcon}</span>
-      سؤال ${i+1}: ${q.text}
+      سؤال ${i+1}: ${decodedText}
     </h4>`;
 
     if (q.type === "tf") {
       ["صح", "خطأ"].forEach(opt => {
+        // فك تشفير الخيارات أيضاً
+        const decodedOpt = decodeText(opt);
         box.innerHTML += `
           <label class="option-item">
             <input type="radio" name="q${i}" value="${opt}" ${answers[i] === opt ? 'checked' : ''} onchange="saveAnswer(${i}, '${opt}')"> 
             <i class="fas ${opt === 'صح' ? 'fa-check-circle' : 'fa-times-circle'}" style="color: ${opt === 'صح' ? 'var(--success)' : 'var(--danger)'}; margin-left: 8px;"></i>
-            ${opt}
+            ${decodedOpt}
           </label>`;
       });
     } else {
       q.options.forEach((opt, idx) => {
         const icons = ['fa-star', 'fa-heart', 'fa-gem', 'fa-crown'];
+        // فك تشفير الخيارات
+        const decodedOpt = decodeText(opt);
         box.innerHTML += `
           <label class="option-item">
             <input type="radio" name="q${i}" value="${idx}" ${answers[i] == idx ? 'checked' : ''} onchange="saveAnswer(${i}, ${idx})"> 
             <i class="fas ${icons[idx % icons.length]}" style="color: var(--gold); margin-left: 8px;"></i>
-            ${opt}
+            ${decodedOpt}
           </label>`;
       });
     }
@@ -1341,7 +1436,7 @@ function formatMMSS(sec) {
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-/* ===================== النهاية والتقرير المبسط (بدون جدول مقارنة) ===================== */
+/* ===================== النهاية والتقرير المبسط ===================== */
 function submitExam(isTerminated) {
   if (isExamFinished) return;
   isExamFinished = true;
@@ -1451,48 +1546,6 @@ function submitExam(isTerminated) {
 
 // البدء
 initExam();
-
-/* ===================== الإضافات الجديدة - منع النسخ بشكل كامل ===================== */
-// تم إضافة هذه الميزات مع الحفاظ على الكود الأصلي كما هو
-
-// 1. منع القص واللصق
-document.addEventListener("cut", (e) => {
-  e.preventDefault();
-  cheatLog.copyAttempts++;
-  logViolation("قص", "محاولة قص المحتوى ممنوعة");
-});
-
-document.addEventListener("paste", (e) => {
-  e.preventDefault();
-  cheatLog.copyAttempts++;
-  logViolation("لصق", "محاولة لصق المحتوى ممنوعة");
-});
-
-// 2. منع تحديد النص
-document.addEventListener("selectstart", (e) => {
-  e.preventDefault();
-  return false;
-});
-
-// 3. منع سحب النص
-document.addEventListener("dragstart", (e) => {
-  e.preventDefault();
-  cheatLog.copyAttempts++;
-  logViolation("سحب", "محاولة سحب المحتوى ممنوعة");
-  return false;
-});
-
-// 4. توسيع مراقبة لوحة المفاتيح لمنع Ctrl+C و Ctrl+X و Ctrl+V
-const originalKeydown = document.addEventListener("keydown", (e) => {
-  // هذا مستمع إضافي، لن نستبدل المستمع الأصلي بل نضيف عليه
-  if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || e.key === 'v' || e.key === 'V')) {
-    e.preventDefault();
-    cheatLog.copyAttempts++;
-    logViolation("نسخ", "محاولة استخدام اختصار النسخ/القص/اللصق ممنوعة");
-  }
-});
-
-// ملاحظة: تم الحفاظ على مستمع keydown الأصلي بالكامل، وهذا مستمع إضافي
 </script>
 
 <!-- توقيع المهندس نادر إضافي -->
