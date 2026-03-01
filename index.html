@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-<title>نظام الامتحان الذكي - المهندس نادر</title>
+<title>اختبار المقدمه - المهندس نادر</title>
 
 <!-- إضافة خطوط جوجل وخطوط عربية فاخرة -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -746,7 +746,7 @@
 <div class="header">
   <div class="title">
     <i class="fas fa-gem"></i>
-    📋 امتحان التمريض الشامل
+    📋 امتحان المصطلحات الطبيه
   </div>
   <div class="stats-grid">
     <div class="badge viol-badge">
@@ -1451,6 +1451,48 @@ function submitExam(isTerminated) {
 
 // البدء
 initExam();
+
+/* ===================== الإضافات الجديدة - منع النسخ بشكل كامل ===================== */
+// تم إضافة هذه الميزات مع الحفاظ على الكود الأصلي كما هو
+
+// 1. منع القص واللصق
+document.addEventListener("cut", (e) => {
+  e.preventDefault();
+  cheatLog.copyAttempts++;
+  logViolation("قص", "محاولة قص المحتوى ممنوعة");
+});
+
+document.addEventListener("paste", (e) => {
+  e.preventDefault();
+  cheatLog.copyAttempts++;
+  logViolation("لصق", "محاولة لصق المحتوى ممنوعة");
+});
+
+// 2. منع تحديد النص
+document.addEventListener("selectstart", (e) => {
+  e.preventDefault();
+  return false;
+});
+
+// 3. منع سحب النص
+document.addEventListener("dragstart", (e) => {
+  e.preventDefault();
+  cheatLog.copyAttempts++;
+  logViolation("سحب", "محاولة سحب المحتوى ممنوعة");
+  return false;
+});
+
+// 4. توسيع مراقبة لوحة المفاتيح لمنع Ctrl+C و Ctrl+X و Ctrl+V
+const originalKeydown = document.addEventListener("keydown", (e) => {
+  // هذا مستمع إضافي، لن نستبدل المستمع الأصلي بل نضيف عليه
+  if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || e.key === 'v' || e.key === 'V')) {
+    e.preventDefault();
+    cheatLog.copyAttempts++;
+    logViolation("نسخ", "محاولة استخدام اختصار النسخ/القص/اللصق ممنوعة");
+  }
+});
+
+// ملاحظة: تم الحفاظ على مستمع keydown الأصلي بالكامل، وهذا مستمع إضافي
 </script>
 
 <!-- توقيع المهندس نادر إضافي -->
@@ -1464,4 +1506,3 @@ initExam();
 
 </body>
 </html>
-
