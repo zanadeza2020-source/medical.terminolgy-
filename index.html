@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-<title>نظام الامتحان الذكي - المهندس نادر</title>
+<title>امتحان المصطلحات الطبيه - المهندس نادر</title>
 
 <!-- إضافة خطوط جوجل وخطوط عربية فاخرة -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
 <!-- إضافة أيقونات Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-  /* متغيرات الألوان - ثيم فاخر */
-  :root { 
-    --primary: #5e35b1; 
+  /* متغيرات الألوان - ثيمات متعددة */
+  :root {
+    --primary: #5e35b1;
     --primary-light: #7e57c2;
     --primary-dark: #4527a0;
     --secondary: #ff6f00;
     --secondary-light: #ffa040;
-    --danger: #d32f2f; 
-    --success: #2e7d32; 
+    --danger: #d32f2f;
+    --success: #2e7d32;
     --info: #0288d1;
     --warning: #f57c00;
     --gold: #ffd700;
@@ -40,50 +40,105 @@
     --border-radius-md: 12px;
     --border-radius-lg: 20px;
     --border-radius-xl: 30px;
+    --bg-opacity: 0.95;
   }
-  
-  /* تنسيقات عامة متجاوبة */
+
+  /* الثيم الداكن */
+  body.dark-theme {
+    --primary: #9575cd;
+    --primary-light: #b39ddb;
+    --primary-dark: #7e57c2;
+    --secondary: #ffb74d;
+    --secondary-light: #ffd95b;
+    --danger: #ef5350;
+    --success: #66bb6a;
+    --info: #4fc3f7;
+    --warning: #ffa726;
+    --gold: #ffd54f;
+    --dark: #f5f5f5;
+    --darker: #e0e0e0;
+    --light: #1e1e2f;
+    --white: #2d2d3a;
+    --gradient-1: linear-gradient(135deg, #5e35b1 0%, #311b92 100%);
+    --gradient-2: linear-gradient(135deg, #c2185b 0%, #880e4f 100%);
+    --gradient-3: linear-gradient(135deg, #0277bd 0%, #004c8c 100%);
+    --gradient-gold: linear-gradient(135deg, #ff8f00 0%, #ff6f00 100%);
+  }
+
+  /* الثيم الذهبي */
+  body.gold-theme {
+    --primary: #bf9b30;
+    --primary-light: #e6b422;
+    --primary-dark: #a67c00;
+    --secondary: #b8860b;
+    --secondary-light: #daa520;
+    --danger: #b22222;
+    --success: #2e7d32;
+    --info: #1e4b5e;
+    --warning: #b76e79;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --dark: #4a3c28;
+    --darker: #2c1e0e;
+    --light: #faf3e0;
+    --white: #fff9e6;
+    --gradient-1: linear-gradient(135deg, #bf9b30 0%, #a67c00 100%);
+    --gradient-2: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
+    --gradient-3: linear-gradient(135deg, #b8860b 0%, #8b6912 100%);
+    --gradient-gold: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  }
+
+  /* الثيم الطبي */
+  body.medical-theme {
+    --primary: #00695c;
+    --primary-light: #2b7a78;
+    --primary-dark: #004d40;
+    --secondary: #00acc1;
+    --secondary-light: #4dd0e1;
+    --danger: #c62828;
+    --success: #2e7d32;
+    --info: #0277bd;
+    --warning: #f57c00;
+    --gold: #ffb74d;
+    --silver: #bdbdbd;
+    --dark: #263238;
+    --darker: #1a272e;
+    --light: #e0f2f1;
+    --white: #f5f5f5;
+    --gradient-1: linear-gradient(135deg, #00695c 0%, #004d40 100%);
+    --gradient-2: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
+    --gradient-3: linear-gradient(135deg, #00838f 0%, #005b5f 100%);
+    --gradient-gold: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  
+
   html {
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
   }
-  
-  body { 
-    font-family: 'Cairo', 'Tajawal', sans-serif; 
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    margin:0; 
-    user-select:none;
+
+  body {
+    font-family: 'Cairo', 'Tajawal', 'Almarai', sans-serif;
+    background: var(--gradient-1);
+    margin: 0;
+    user-select: none;
     min-height: 100vh;
     position: relative;
     color: var(--dark);
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
+    transition: background 0.3s ease, color 0.3s ease;
   }
-  
-  /* خلفية متحركة محسنة للهواتف */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,100 100,0 100,100" fill="rgba(255,255,255,0.05)"/></svg>');
-    background-size: cover;
-    z-index: -1;
-    pointer-events: none;
-  }
-  
-  /* الهيدر المتطور - متجاوب */
+
+  /* الهيدر المتطور */
   .header {
-    background: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,var(--bg-opacity));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 12px 20px;
@@ -99,9 +154,9 @@
     flex-wrap: wrap;
     gap: 10px;
   }
-  
-  .title { 
-    font-weight: 900; 
+
+  .title {
+    font-weight: 900;
     color: var(--primary-dark);
     font-size: clamp(1.1rem, 4vw, 1.5rem);
     display: flex;
@@ -110,29 +165,19 @@
     flex: 1;
     min-width: 200px;
   }
-  
-  .title i {
-    color: var(--gold);
-    font-size: clamp(1.2rem, 5vw, 1.8rem);
-    animation: spin 10s linear infinite;
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  .stats-grid { 
-    display: flex; 
+
+  .stats-grid {
+    display: flex;
     gap: 10px;
     flex-wrap: wrap;
     justify-content: flex-end;
+    align-items: center;
   }
-  
-  .badge { 
-    padding: 8px 16px; 
-    border-radius: var(--border-radius-xl); 
-    font-weight: 700; 
+
+  .badge {
+    padding: 8px 16px;
+    border-radius: var(--border-radius-xl);
+    font-weight: 700;
     background: rgba(255,255,255,0.2);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -145,50 +190,105 @@
     gap: 6px;
     white-space: nowrap;
   }
-  
-  .badge:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-  }
-  
-  .timer-badge { 
-    border-color: var(--danger); 
+
+  .timer-badge {
+    border-color: var(--danger);
     color: var(--danger);
     background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
   }
-  
-  .viol-badge { 
-    border-color: var(--dark); 
+
+  .viol-badge {
+    border-color: var(--dark);
     color: var(--dark);
     background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
   }
-  
-  /* الحاوية الرئيسية - متجاوبة */
-  .container { 
-    padding: clamp(15px, 4vw, 30px); 
-    max-width: 1000px; 
+
+  /* شريط المعلومات المتطور */
+  .info-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+    color: var(--dark);
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.2);
+    border-radius: var(--border-radius-md);
+    transition: all 0.3s ease;
+  }
+
+  .info-item i {
+    color: var(--gold);
+  }
+
+  /* محدد الثيمات */
+  .theme-selector {
+    display: flex;
+    gap: 5px;
+  }
+
+  .theme-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .theme-btn:hover {
+    transform: scale(1.2);
+    border-color: var(--gold);
+  }
+
+  .theme-btn.default { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .theme-btn.dark { background: linear-gradient(135deg, #333, #000); }
+  .theme-btn.gold { background: linear-gradient(135deg, #bf9b30, #a67c00); }
+  .theme-btn.medical { background: linear-gradient(135deg, #00695c, #004d40); }
+
+  /* الحاوية الرئيسية */
+  .container {
+    padding: clamp(15px, 4vw, 30px);
+    max-width: 1200px;
     width: 100%;
-    margin: 20px auto; 
+    margin: 20px auto;
     min-height: calc(80vh - 100px);
     position: relative;
   }
-  
-  /* بطاقات الأسئلة الفاخرة - متجاوبة */
-  .question-box { 
-    background: rgba(255,255,255,0.95);
+
+  /* بطاقات الأسئلة ثلاثية الأبعاد */
+  .question-box {
+    background: rgba(255,255,255,var(--bg-opacity));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: clamp(20px, 4vw, 30px); 
-    border-radius: var(--border-radius-lg); 
-    margin-bottom: 20px; 
+    padding: clamp(20px, 4vw, 30px);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: 20px;
     border: 1px solid rgba(255,255,255,0.3);
     box-shadow: var(--shadow-xl);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
     width: 100%;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
-  
+
+  .question-box:hover {
+    transform: translateY(-10px) rotateX(2deg);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  }
+
   .question-box::before {
     content: '';
     position: absolute;
@@ -198,321 +298,235 @@
     height: 5px;
     background: var(--gradient-gold);
   }
-  
-  .question-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+
+  /* شريط التقدم المتحرك */
+  .progress-container {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden;
+    position: relative;
   }
-  
-  .question-box h4 { 
-    margin-top:0; 
-    color: var(--primary-dark); 
-    border-bottom: 2px solid var(--gold); 
-    padding-bottom: 15px; 
-    margin-bottom: 20px;
-    font-weight: 700;
-    font-size: clamp(1rem, 3.5vw, 1.25rem);
+
+  .progress-fill {
+    height: 100%;
+    background: var(--gradient-gold);
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* خيارات الأسئلة المتطورة */
+  .option-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    word-break: break-word;
-  }
-  
-  .question-box h4 i {
-    color: var(--gold);
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
-  }
-  
-  /* تنسيقات خاصة لنوع السؤال */
-  .question-type-badge {
-    display: inline-block;
-    background: var(--gradient-1);
-    color: white;
-    padding: 5px 15px;
-    border-radius: var(--border-radius-xl);
-    font-size: 0.8rem;
-    margin-right: 10px;
-  }
-  
-  .option-item { 
-    display: block; 
-    padding: clamp(12px, 3vw, 15px) clamp(15px, 4vw, 20px); 
-    margin: 10px 0; 
+    padding: clamp(12px, 3vw, 15px) clamp(15px, 4vw, 20px);
+    margin: 10px 0;
     background: rgba(249,249,249,0.8);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border-radius: var(--border-radius-md); 
-    cursor: pointer; 
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
     transition: all 0.3s ease;
     border: 2px solid transparent;
     font-weight: 500;
     font-size: clamp(0.9rem, 3vw, 1rem);
     word-break: break-word;
-  }
-  
-  .option-item:hover { 
-    background: linear-gradient(135deg, #f5f5f5, #ffffff);
-    border-color: var(--primary-light);
-    transform: translateX(-5px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .option-item:has(input:checked) {
-    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
-    border-color: var(--success);
-  }
-  
-  input[type="radio"] { 
-    margin-left: 12px; 
-    transform: scale(1.2);
-    accent-color: var(--primary);
-    flex-shrink: 0;
-  }
-
-  /* الأزرار المتطورة - متجاوبة */
-  .nav-area { 
-    text-align:center; 
-    margin: 30px 0; 
-    width: 100%;
-  }
-  
-  .btn-next { 
-    padding: clamp(12px, 3vw, 15px) clamp(30px, 8vw, 50px); 
-    font-size: clamp(1rem, 4vw, 1.25rem); 
-    border: none; 
-    border-radius: var(--border-radius-xl); 
-    cursor: pointer; 
-    background: var(--gradient-1);
-    color: #fff; 
-    font-weight: 700; 
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-lg);
     position: relative;
     overflow: hidden;
-    letter-spacing: 1px;
-    width: auto;
-    max-width: 100%;
-  }
-  
-  .btn-next::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
-  }
-  
-  .btn-next:hover::before {
-    left: 100%;
-  }
-  
-  .btn-next:disabled { 
-    background: linear-gradient(135deg, #b0bec5, #90a4ae);
-    cursor: not-allowed; 
-    transform: none; 
-    box-shadow: var(--shadow-sm);
-  }
-  
-  .btn-next:hover:not(:disabled) { 
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: var(--shadow-xl);
   }
 
-  /* مربعات الحالة المميزة - متجاوبة */
-  .status-box { 
-    display: flex; 
-    flex-wrap: wrap; 
-    justify-content: center; 
-    gap: 8px; 
-    margin-top: 25px; 
-    background: rgba(255,255,255,0.95);
+  .option-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .option-item:active::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .option-item:hover {
+    background: linear-gradient(135deg, #f5f5f5, #ffffff);
+    border-color: var(--primary-light);
+    transform: translateX(-5px) scale(1.02);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* مؤشرات الأسئلة */
+  .status-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 25px;
+    background: rgba(255,255,255,var(--bg-opacity));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: clamp(15px, 4vw, 25px); 
-    border-radius: var(--border-radius-lg); 
+    padding: clamp(15px, 4vw, 25px);
+    border-radius: var(--border-radius-lg);
     border: 1px solid rgba(255,255,255,0.3);
     box-shadow: var(--shadow-lg);
     width: 100%;
   }
-  
-  .q-indicator { 
-    width: clamp(35px, 8vw, 45px); 
-    height: clamp(35px, 8vw, 45px); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
-    border-radius: var(--border-radius-md); 
-    font-weight: 700; 
-    font-size: clamp(0.8rem, 3vw, 1rem); 
-    color: var(--dark); 
-    transition: all 0.3s ease;
+
+  .q-indicator {
+    width: clamp(35px, 8vw, 45px);
+    height: clamp(35px, 8vw, 45px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    border-radius: var(--border-radius-md);
+    font-weight: 700;
+    font-size: clamp(0.8rem, 3vw, 1rem);
+    color: var(--dark);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid transparent;
-    cursor: pointer;
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
+    /* تم إزالة cursor: pointer لتعطيل التنقل */
   }
-  
-  .q-indicator:hover {
-    transform: scale(1.1);
-    border-color: var(--primary);
-  }
-  
-  .q-indicator.answered { 
+
+  .q-indicator.answered {
     background: var(--gradient-1);
-    color: #fff; 
+    color: #fff;
     border-color: var(--gold);
     animation: pulse 2s infinite;
   }
-  
+
+  .q-indicator.correct {
+    background: var(--gradient-3);
+  }
+
+  .q-indicator.wrong {
+    background: var(--gradient-2);
+  }
+
   @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(94, 53, 177, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(94, 53, 177, 0); }
     100% { box-shadow: 0 0 0 0 rgba(94, 53, 177, 0); }
   }
 
-  /* تقرير النتائج الفاخر - متجاوب */
-  .report-card { 
+  /* تقرير النتائج المتطور */
+  .report-card {
     background: rgba(255,255,255,0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: clamp(20px, 5vw, 40px); 
-    border-radius: var(--border-radius-lg); 
-    margin-top: 25px; 
-    box-shadow: var(--shadow-xl); 
+    padding: clamp(20px, 5vw, 40px);
+    border-radius: var(--border-radius-lg);
+    margin-top: 25px;
+    box-shadow: var(--shadow-xl);
     border-top: 8px solid var(--gold);
     animation: slideUp 0.5s ease;
     width: 100%;
-    overflow-x: auto;
   }
-  
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  /* جداول متجاوبة */
-  .table-responsive {
-    overflow-x: auto;
-    width: 100%;
+
+  /* لوحة المعلومات */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
     margin: 20px 0;
   }
-  
-  table { 
-    width:100%; 
-    border-collapse: collapse; 
-    margin-top: 20px; 
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-md);
-    min-width: 300px;
-  }
-  
-  th, td { 
-    border: 1px solid #e0e0e0; 
-    padding: clamp(8px, 2vw, 15px); 
-    text-align: right; 
-    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
-    word-break: break-word;
-  }
-  
-  th { 
-    background: var(--gradient-1);
-    color: #fff; 
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  
-  td {
-    background: rgba(255,255,255,0.9);
-  }
-  
-  tr:hover td {
-    background: #f5f5f5;
-  }
-  
-  .critical-text { 
-    color: var(--danger); 
-    font-weight: 700; 
-    animation: blink 1s infinite;
-  }
-  
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
 
-  /* شاشة التنبيه المتطورة - متجاوبة */
-  .overlay { 
-    position: fixed; 
-    inset:0; 
-    background: rgba(0,0,0,0.9); 
+  .dashboard-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    display:none; 
-    z-index: 10000; 
-    align-items:center; 
-    justify-content:center; 
-    padding: 15px; 
-    width: 100%;
-    height: 100%;
-  }
-  
-  .overlay-content { 
-    background: linear-gradient(135deg, #ffffff, #f5f5f5); 
-    border-radius: var(--border-radius-lg); 
-    padding: clamp(25px, 6vw, 40px); 
-    max-width: 500px; 
-    width: 95%; 
-    text-align:center; 
-    border-top: 10px solid var(--danger); 
-    animation: shake 0.5s, glow 2s infinite;
-    box-shadow: var(--shadow-xl);
-    margin: 0 auto;
-  }
-  
-  @keyframes glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(211, 47, 47, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(211, 47, 47, 0.6); }
-  }
-  
-  @keyframes shake { 
-    0%, 100% {transform: translateX(0);} 
-    25% {transform: translateX(-15px);} 
-    75% {transform: translateX(15px);} 
-  }
-  
-  .btn-confirm { 
-    background: var(--gradient-1); 
-    color: #fff; 
-    border: none; 
-    padding: clamp(12px, 3vw, 15px) clamp(25px, 6vw, 35px); 
-    border-radius: var(--border-radius-xl); 
-    cursor: pointer; 
-    font-weight: 700; 
-    margin-top: 20px;
-    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
     transition: all 0.3s ease;
-    box-shadow: var(--shadow-lg);
-    width: auto;
-    max-width: 100%;
   }
-  
-  .btn-confirm:hover {
-    transform: translateY(-3px) scale(1.02);
+
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* جدول المقارنة */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .comparison-table th {
+    background: var(--gradient-1);
+    color: white;
+    padding: 12px;
+    font-weight: 700;
+  }
+
+  .comparison-table td {
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.9);
+    border-bottom: 1px solid #eee;
+  }
+
+  .comparison-table tr:hover td {
+    background: #f5f5f5;
+  }
+
+  /* شاشة التنبيه */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+
+  .overlay-content {
+    background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    border-radius: var(--border-radius-lg);
+    padding: clamp(25px, 6vw, 40px);
+    max-width: 500px;
+    width: 95%;
+    text-align: center;
+    border-top: 10px solid var(--danger);
+    animation: shake 0.5s, glow 2s infinite;
     box-shadow: var(--shadow-xl);
   }
 
-  /* توقيع المهندس نادر - متجاوب */
+  /* توقيع المهندس نادر */
   .signature {
     text-align: center;
     margin-top: 30px;
@@ -525,12 +539,10 @@
     color: #fff;
     font-weight: 600;
     font-size: clamp(0.9rem, 3vw, 1.1rem);
-    letter-spacing: 1px;
     position: relative;
     overflow: hidden;
-    width: 100%;
   }
-  
+
   .signature::before {
     content: '';
     position: absolute;
@@ -541,31 +553,20 @@
     background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
     animation: shine 3s infinite;
   }
-  
+
   @keyframes shine {
     0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
     100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
   }
-  
-  .signature i {
-    color: var(--gold);
-    margin: 0 5px;
-    animation: heartbeat 1.5s ease infinite;
-  }
-  
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-  }
-  
-  .signature .engineer {
+
+  .engineer {
     color: var(--gold);
     font-weight: 900;
     font-size: clamp(1.1rem, 4vw, 1.4rem);
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   }
-  
-  .signature .nader {
+
+  .nader {
     color: #fff;
     font-weight: 700;
     background: var(--gradient-gold);
@@ -573,83 +574,10 @@
     -webkit-text-fill-color: transparent;
     font-size: clamp(1.2rem, 5vw, 1.5rem);
   }
-  
-  .hidden { display:none; }
-  
-  /* عناصر زخرفية متجاوبة */
-  .floating-shapes {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    overflow: hidden;
-  }
-  
-  .shape {
-    position: absolute;
-    background: rgba(255,255,255,0.03);
-    border-radius: 50%;
-    animation: float 20s infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-50px) rotate(180deg); }
-  }
-  
-  .shape1 {
-    width: min(300px, 50vw);
-    height: min(300px, 50vw);
-    top: -150px;
-    right: -150px;
-  }
-  
-  .shape2 {
-    width: min(400px, 60vw);
-    height: min(400px, 60vw);
-    bottom: -200px;
-    left: -200px;
-    animation-delay: -5s;
-  }
-  
-  .shape3 {
-    width: min(200px, 30vw);
-    height: min(200px, 30vw);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation-delay: -10s;
-  }
-  
-  /* شريط التقدم */
-  .progress-bar {
-    width: 100%;
-    height: 6px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 4px;
-    margin: 15px 0;
-    overflow: hidden;
-  }
-  
-  .progress-fill {
-    height: 100%;
-    background: var(--gradient-gold);
-    width: 0%;
-    transition: width 0.3s ease;
-  }
-  
-  /* أيقونات التجميل */
-  .section-icon {
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
-    color: var(--gold);
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  
-  /* تحسينات إضافية للشاشات الصغيرة */
+
+  .hidden { display: none; }
+
+  /* تحسينات للشاشات الصغيرة */
   @media (max-width: 480px) {
     .header {
       flex-direction: column;
@@ -661,94 +589,50 @@
       width: 100%;
     }
     
-    .badge {
-      flex: 1;
-      justify-content: center;
+    .info-bar {
+      flex-direction: column;
     }
     
-    .option-item {
-      display: flex;
-      align-items: center;
-    }
-    
-    .q-indicator {
-      width: 32px;
-      height: 32px;
-      font-size: 12px;
+    .info-item {
+      width: 100%;
     }
   }
-  
-  /* تحسينات للشاشات المتوسطة */
-  @media (min-width: 481px) and (max-width: 768px) {
-    .q-indicator {
-      width: 38px;
-      height: 38px;
-    }
-  }
-  
-  /* تحسينات للشاشات الكبيرة */
-  @media (min-width: 1400px) {
-    .container {
-      max-width: 1200px;
-    }
-    
-    .question-box h4 {
-      font-size: 1.4rem;
-    }
-    
-    .option-item {
-      font-size: 1.1rem;
-    }
-  }
-  
+
   /* تحسينات للأجهزة التي تعمل باللمس */
   @media (hover: none) and (pointer: coarse) {
     .option-item:hover {
       transform: none;
     }
     
-    .btn-next:hover {
-      transform: none;
-    }
-    
-    .badge:hover {
+    .question-box:hover {
       transform: none;
     }
   }
-  
-  /* تحسينات للوضع الأفقي على الهواتف */
-  @media (max-height: 500px) and (orientation: landscape) {
-    .header {
-      padding: 8px 15px;
-    }
-    
-    .container {
-      margin: 10px auto;
-    }
-    
-    .question-box {
-      padding: 15px;
-    }
+
+  /* تعطيل النقر على مؤشرات الأسئلة */
+  .q-indicator {
+    pointer-events: none;
   }
 </style>
 </head>
 
 <body oncontextmenu="return false;">
 
-<!-- عناصر زخرفية -->
-<div class="floating-shapes">
-  <div class="shape shape1"></div>
-  <div class="shape shape2"></div>
-  <div class="shape shape3"></div>
-</div>
-
 <!-- الهيدر المتطور -->
 <div class="header">
   <div class="title">
     <i class="fas fa-gem"></i>
-    📋 امتحان التمريض الشامل
+    📋 امتحان المصطلحات الطبيه
   </div>
   <div class="stats-grid">
+    <!-- محدد الثيمات -->
+    <div class="theme-selector">
+      <div class="theme-btn default" onclick="setTheme('default')" title="الثيم الافتراضي"></div>
+      <div class="theme-btn dark" onclick="setTheme('dark')" title="الثيم الداكن"></div>
+      <div class="theme-btn gold" onclick="setTheme('gold')" title="الثيم الذهبي"></div>
+      <div class="theme-btn medical" onclick="setTheme('medical')" title="الثيم الطبي"></div>
+    </div>
+    
     <div class="badge viol-badge">
       <i class="fas fa-exclamation-triangle"></i>
       المخالفات: <span id="violCount">0</span> / 3
@@ -757,11 +641,47 @@
       <i class="fas fa-hourglass-half"></i>
       الوقت المتبقي: <span id="timeDisplay">30:00</span>
     </div>
+    <div class="badge timer-badge">
+      <i class="fas fa-redo-alt"></i>
+      المحاولات: <span id="attemptsLeft">3</span>/3
+    </div>
   </div>
 </div>
 
-<!-- شريط التقدم -->
-<div class="progress-bar" id="progressBar">
+<!-- شريط المعلومات المتطور -->
+<div class="info-bar" id="infoBar">
+  <div class="info-item">
+    <i class="fas fa-globe"></i>
+    <span id="ipAddress">جاري تحديد IP...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-map-marker-alt"></i>
+    <span id="location">جاري تحديد الموقع...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-wifi"></i>
+    <span id="connectionStatus">جاري فحص الاتصال...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-tachometer-alt"></i>
+    <span id="speedTest">سرعة الإنترنت: جاري القياس...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-clock"></i>
+    <span id="currentTime"></span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-battery-three-quarters"></i>
+    <span id="batteryStatus">البطارية: جاري الفحص...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-device"></i>
+    <span id="deviceInfo"></span>
+  </div>
+</div>
+
+<!-- شريط التقدم المتحرك -->
+<div class="progress-container" id="progressContainer">
   <div class="progress-fill" id="progressFill"></div>
 </div>
 
@@ -771,7 +691,7 @@
     <div class="nav-area">
       <button id="nextBtn" class="btn-next" onclick="nextPage()" disabled>
         <i class="fas fa-arrow-left"></i>
-        السؤال التالي 
+        السؤال التالي
         <i class="fas fa-arrow-right"></i>
       </button>
     </div>
@@ -811,298 +731,321 @@ const TOTAL_QUESTIONS = 30;
 const Q_PER_PAGE = 2;
 const EXAM_TIME_MIN = 30;
 const AUTO_TERMINATE_AT = 3;
+const MAX_ATTEMPTS = 3;
 
-/* ===================== دوال التشفير وفك التشفير ===================== */
-// هذه الدوال هي الحل السحري لمنع النسخ في جميع المتصفحات
-
-function encodeText(text) {
-  if (!text) return text;
+/* ===================== نظام الصوت المتقدم ===================== */
+const SoundSystem = {
+  audioContext: null,
+  initialized: false,
   
-  // تشفير النص باستخدام تشفير بسيط يعتمد على إزاحة الأحرف
-  // هذا يجعل النص يظهر بشكل طبيعي للمستخدم، ولكن عند نسخه تنسخ أحرف مشوشة
-  let encoded = '';
-  for (let i = 0; i < text.length; i++) {
-    const code = text.charCodeAt(i);
-    // نطاق الحروف العربية واللاتينية
-    if ((code >= 0x0600 && code <= 0x06FF) || // العربية
-        (code >= 0x0030 && code <= 0x0039) || // الأرقام
-        (code >= 0x0041 && code <= 0x005A) || // A-Z
-        (code >= 0x0061 && code <= 0x007A)) { // a-z
-      // إزاحة الحرف بمقدار 1 لعمل تشويش
-      encoded += String.fromCharCode(code + 1);
-    } else {
-      // المسافات وعلامات الترقيم تبقى كما هي
-      encoded += text[i];
+  init() {
+    try {
+      this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      this.initialized = true;
+    } catch (e) {
+      console.log('صوت غير مدعوم');
     }
+  },
+  
+  async playSound(type) {
+    if (!this.initialized) this.init();
+    if (!this.audioContext) return;
+    
+    try {
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      
+      const oscillator = this.audioContext.createOscillator();
+      const gainNode = this.audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      switch(type) {
+        case 'warning':
+          // صوت تحذيري عالي
+          oscillator.frequency.setValueAtTime(1760, this.audioContext.currentTime); // A6
+          oscillator.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.3); // A5
+          gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.3);
+          break;
+          
+        case 'violation':
+          // صوت مخالفة صارم جداً وعالي
+          // نغمة إنذار حادة متكررة
+          for (let i = 0; i < 3; i++) {
+            const time = this.audioContext.currentTime + (i * 0.2);
+            oscillator.frequency.setValueAtTime(2093, time); // C7
+            oscillator.frequency.setValueAtTime(2637, time + 0.1); // E7
+            oscillator.frequency.setValueAtTime(3136, time + 0.2); // G7
+          }
+          gainNode.gain.setValueAtTime(0.7, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.8);
+          break;
+          
+        case 'timeWarning':
+          // صوت تحذير الوقت - نغمة إنذار قوية
+          oscillator.frequency.setValueAtTime(1318.52, this.audioContext.currentTime); // E6
+          oscillator.frequency.setValueAtTime(1567.98, this.audioContext.currentTime + 0.2); // G6
+          oscillator.frequency.setValueAtTime(1760.00, this.audioContext.currentTime + 0.4); // A6
+          oscillator.frequency.setValueAtTime(2093.00, this.audioContext.currentTime + 0.6); // C7
+          gainNode.gain.setValueAtTime(0.6, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.8);
+          break;
+          
+        case 'start':
+          oscillator.frequency.setValueAtTime(523.25, this.audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.2);
+          oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime + 0.4);
+          gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.6);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.6);
+          break;
+          
+        case 'end':
+          oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.2);
+          oscillator.frequency.setValueAtTime(523.25, this.audioContext.currentTime + 0.4);
+          gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.6);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.6);
+          break;
+      }
+    } catch (e) {}
   }
-  return encoded;
+};
+
+/* ===================== نظام المحاولات المتقدم (مرتبط بـ IP) ===================== */
+let attempts = {
+  current: 1,
+  max: MAX_ATTEMPTS,
+  history: []
+};
+
+// الحصول على IP فريد للمستخدم
+async function getUserIP() {
+  try {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+  } catch (error) {
+    // إذا فشل الحصول على IP، استخدم معرف جلسة عشوائي
+    return 'local_' + Math.random().toString(36).substring(7);
+  }
 }
 
-function decodeText(encodedText) {
-  if (!encodedText) return encodedText;
+// تحميل المحاولات بناءً على IP
+async function loadAttempts() {
+  const userIP = await getUserIP();
+  const storageKey = `exam_attempts_${userIP}`;
+  const saved = localStorage.getItem(storageKey);
   
-  // فك التشفير لعرض النص بشكل طبيعي للمستخدم
-  let decoded = '';
-  for (let i = 0; i < encodedText.length; i++) {
-    const code = encodedText.charCodeAt(i);
-    // إعادة الحرف إلى وضعه الطبيعي
-    if ((code > 0x0600 && code <= 0x06FF) || // العربية
-        (code > 0x0030 && code <= 0x0039) || // الأرقام
-        (code > 0x0041 && code <= 0x005A) || // A-Z
-        (code > 0x0061 && code <= 0x007A)) { // a-z
-      decoded += String.fromCharCode(code - 1);
-    } else {
-      decoded += encodedText[i];
-    }
+  if (saved) {
+    attempts = JSON.parse(saved);
+  } else {
+    attempts = {
+      current: 1,
+      max: MAX_ATTEMPTS,
+      history: [],
+      ip: userIP
+    };
+    saveAttempts();
   }
-  return decoded;
+  
+  updateAttemptsDisplay();
+  return userIP;
 }
 
-/* ===================== توليد الأسئلة (15 صح/خطأ + 15 اختيار من متعدد) ===================== */
+function saveAttempts() {
+  const userIP = attempts.ip || localStorage.getItem('currentIP') || 'default';
+  const storageKey = `exam_attempts_${userIP}`;
+  localStorage.setItem(storageKey, JSON.stringify(attempts));
+}
+
+function updateAttemptsDisplay() {
+  document.getElementById('attemptsLeft').textContent = attempts.current;
+}
+
+function canStartExam() {
+  return attempts.current <= attempts.max;
+}
+
+function useAttempt() {
+  if (attempts.current <= attempts.max) {
+    attempts.current++;
+    saveAttempts();
+    updateAttemptsDisplay();
+    return true;
+  }
+  return false;
+}
+
+function resetAttempts() {
+  attempts.current = 1;
+  attempts.history = [];
+  saveAttempts();
+  alert('تم إعادة تعيين المحاولات');
+  location.reload();
+}
+
+/* ===================== معلومات الموقع والجهاز المتقدمة ===================== */
+async function collectDeviceInfo() {
+  // IP والموقع
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    document.getElementById('ipAddress').textContent = data.ip || 'غير معروف';
+    document.getElementById('location').textContent = 
+      `${data.city || ''} ${data.region || ''} - ${data.country_name || ''}`.trim() || 'غير معروف';
+    
+    // حفظ IP للمحاولات
+    attempts.ip = data.ip;
+    saveAttempts();
+  } catch (error) {
+    document.getElementById('ipAddress').textContent = 'غير متاح';
+    document.getElementById('location').textContent = 'غير متاح';
+  }
+
+  // حالة الاتصال وسرعة الإنترنت
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection) {
+    const type = connection.effectiveType || 'unknown';
+    const speed = connection.downlink ? `${connection.downlink} Mbps` : 'غير معروف';
+    document.getElementById('connectionStatus').textContent = 
+      `متصل (${type}) - ${speed}`;
+    
+    connection.addEventListener('change', () => {
+      document.getElementById('connectionStatus').textContent = 
+        `متصل (${connection.effectiveType}) - ${connection.downlink} Mbps`;
+    });
+  } else {
+    document.getElementById('connectionStatus').textContent = 
+      navigator.onLine ? 'متصل' : 'غير متصل';
+  }
+
+  // سرعة الإنترنت
+  testInternetSpeed();
+
+  // الوقت الحالي
+  updateCurrentTime();
+  setInterval(updateCurrentTime, 1000);
+
+  // معلومات البطارية
+  if (navigator.getBattery) {
+    try {
+      const battery = await navigator.getBattery();
+      updateBatteryInfo(battery);
+      battery.addEventListener('levelchange', () => updateBatteryInfo(battery));
+      battery.addEventListener('chargingchange', () => updateBatteryInfo(battery));
+    } catch (e) {}
+  }
+
+  // معلومات الجهاز
+  const deviceInfo = `${getOS()} - ${getBrowser()} - ${window.screen.width}x${window.screen.height}`;
+  document.getElementById('deviceInfo').textContent = deviceInfo;
+}
+
+function updateCurrentTime() {
+  const now = new Date();
+  const options = { 
+    weekday: 'short', 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit', 
+    minute: '2-digit', 
+    second: '2-digit',
+    hour12: true 
+  };
+  document.getElementById('currentTime').textContent = now.toLocaleString('ar-SA', options);
+}
+
+function updateBatteryInfo(battery) {
+  const level = Math.round(battery.level * 100);
+  const charging = battery.charging ? 'قيد الشحن' : 'غير قيد الشحن';
+  document.getElementById('batteryStatus').textContent = `${level}% - ${charging}`;
+}
+
+function getOS() {
+  const ua = navigator.userAgent;
+  if (ua.includes('Windows')) return 'Windows';
+  if (ua.includes('Mac')) return 'macOS';
+  if (ua.includes('Linux')) return 'Linux';
+  if (ua.includes('Android')) return 'Android';
+  if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
+  return 'غير معروف';
+}
+
+function getBrowser() {
+  const ua = navigator.userAgent;
+  if (ua.includes('Chrome')) return 'Chrome';
+  if (ua.includes('Firefox')) return 'Firefox';
+  if (ua.includes('Safari')) return 'Safari';
+  if (ua.includes('Edge')) return 'Edge';
+  if (ua.includes('Opera')) return 'Opera';
+  return 'غير معروف';
+}
+
+function testInternetSpeed() {
+  const speedSpan = document.getElementById('speedTest');
+  const startTime = Date.now();
+  const image = new Image();
+  image.onload = function() {
+    const endTime = Date.now();
+    const duration = (endTime - startTime) / 1000;
+    const bitsLoaded = 300000;
+    const speedBps = (bitsLoaded / duration).toFixed(2);
+    const speedKbps = (speedBps / 1024).toFixed(2);
+    const speedMbps = (speedKbps / 1024).toFixed(2);
+    speedSpan.textContent = `سرعة الإنترنت: ${speedMbps} Mbps`;
+  };
+  image.onerror = function() {
+    speedSpan.textContent = 'سرعة الإنترنت: غير متاحة';
+  };
+  image.src = 'https://via.placeholder.com/300x150?text=.' + Date.now();
+}
+
+/* ===================== الأسئلة ===================== */
 let questions = [
-  // الأسئلة 1-15: صح/خطأ
-  {
-    id: 1, type: "tf", 
-    text: "The highest stage of learning is achieved when the learner is able to recall information accurately.",
-    correct: "خطأ"
-  },
-  {
-    id: 2, type: "tf", 
-    text: "Affective domain primarily involves learning by performing motor skills and physical manipulation.",
-    correct: "خطأ"
-  },
-  {
-    id: 3, type: "tf", 
-    text: "Gerogogy learners often require structured guidance and frequent encouragement.",
-    correct: "صح"
-  },
-  {
-    id: 4, type: "tf", 
-    text: "Literacy assessment should be conducted after implementing the teaching plan.",
-    correct: "خطأ"
-  },
-  {
-    id: 5, type: "tf", 
-    text: "Motivation driven by fear of criticism produces optimal long-term learning outcomes.",
-    correct: "خطأ"
-  },
-  {
-    id: 6, type: "tf", 
-    text: "Informal teaching requires written objectives and structured evaluation.",
-    correct: "خطأ"
-  },
-  {
-    id: 7, type: "tf", 
-    text: "Latex sensitization is a toxic reaction caused by synthetic rubber compounds.",
-    correct: "خطأ"
-  },
-  {
-    id: 8, type: "tf", 
-    text: "Carbon monoxide poisoning may present with flu-like symptoms without fever.",
-    correct: "صح"
-  },
-  {
-    id: 9, type: "tf", 
-    text: "The RACE protocol prioritizes extinguishing the fire before activating the alarm system.",
-    correct: "خطأ"
-  },
-  {
-    id: 10, type: "tf", 
-    text: "Restraints are recommended as an early preventive measure in confused older adults.",
-    correct: "خطأ"
-  },
-  {
-    id: 11, type: "tf", 
-    text: "Sleep cycles typically alternate between REM and NREM phases approximately 4–6 times per night.",
-    correct: "صح"
-  },
-  {
-    id: 12, type: "tf", 
-    text: "REM sleep is characterized by complete physiologic inactivity and absence of dreams.",
-    correct: "خطأ"
-  },
-  {
-    id: 13, type: "tf", 
-    text: "Chronic sleep deprivation may impair wound healing and immune response.",
-    correct: "صح"
-  },
-  {
-    id: 14, type: "tf", 
-    text: "Nonverbal communication is generally less revealing than verbal communication.",
-    correct: "خطأ"
-  },
-  {
-    id: 15, type: "tf", 
-    text: "Feedback in the communication model is essential to validate message interpretation.",
-    correct: "صح"
-  },
-  
-  // الأسئلة 16-30: اختيار من متعدد
-  {
-    id: 16, type: "mcq", 
-    text: "Which of the following best represents independent use of learning?",
-    options: [
-      "A) Identifying information in a textbook",
-      "B) Repeating instructions to another client",
-      "C) Applying instructions without supervision",
-      "D) Recognizing previously taught concepts"
-    ], 
-    correct: 2
-  },
-  {
-    id: 17, type: "mcq", 
-    text: "A young adult learner is most likely to respond positively to:",
-    options: [
-      "A) Lengthy memorization exercises",
-      "B) Passive lecture-only format",
-      "C) Interactive simulations with immediate feedback",
-      "D) Delayed evaluation and minimal guidance"
-    ], 
-    correct: 2
-  },
-  {
-    id: 18, type: "mcq", 
-    text: "Which factor most directly affects a client’s readiness to learn?",
-    options: [
-      "A) Nurse’s educational level",
-      "B) Room temperature",
-      "C) Client’s pain level",
-      "D) Hospital policies"
-    ], 
-    correct: 2
-  },
-  {
-    id: 19, type: "mcq", 
-    text: "The term 'message code' in the communication model refers to:",
-    options: [
-      "A) The emotional tone of speech",
-      "B) The structured arrangement of symbols forming meaning",
-      "C) The feedback provided by the receiver",
-      "D) The sociocultural background of the communicator"
-    ], 
-    correct: 1
-  },
-  {
-    id: 20, type: "mcq", 
-    text: "Which statement best reflects congruency in communication?",
-    options: [
-      "A) Tone contradicts the spoken message",
-      "B) Gestures reinforce verbal expression",
-      "C) Message lacks emotional context",
-      "D) Receiver ignores feedback"
-    ], 
-    correct: 1
-  },
-  {
-    id: 21, type: "mcq", 
-    text: "In older adults, falls are most commonly associated with:",
-    options: [
-      "A) Excessive protein intake",
-      "B) Hyperactivity",
-      "C) Gait disturbances and antihypertensive medication",
-      "D) Increased muscle mass"
-    ], 
-    correct: 2
-  },
-  {
-    id: 22, type: "mcq", 
-    text: "Macro shock differs from micro shock in that it:",
-    options: [
-      "A) Occurs only in pediatric clients",
-      "B) Involves higher electrical current exposure",
-      "C) Is unrelated to grounding equipment",
-      "D) Does not affect cardiac function"
-    ], 
-    correct: 1
-  },
-  {
-    id: 23, type: "mcq", 
-    text: "The primary physiologic benefit of sleep related to tissue repair is:",
-    options: [
-      "A) Increased sensory alertness",
-      "B) Protein synthesis enhancement",
-      "C) Reduced REM cycles",
-      "D) Elevated blood glucose"
-    ], 
-    correct: 1
-  },
-  {
-    id: 24, type: "mcq", 
-    text: "Which sleep disorder is characterized by cessation of breathing?",
-    options: [
-      "A) Hypersomnia",
-      "B) Parasomnia",
-      "C) Hypopnea",
-      "D) Sleep apnea"
-    ], 
-    correct: 3
-  },
-  {
-    id: 25, type: "mcq", 
-    text: "Which is an example of metacommunication?",
-    options: [
-      "A) Writing a nursing report",
-      "B) Raising an eyebrow during a statement",
-      "C) Clarifying the intention behind a previous statement",
-      "D) Administering medication"
-    ], 
-    correct: 1
-  },
-  {
-    id: 26, type: "mcq", 
-    text: "Effective burn prevention in health institutions requires:",
-    options: [
-      "A) Locked emergency exits",
-      "B) Minimal lighting",
-      "C) Identified and accessible exits",
-      "D) Avoiding fire drills"
-    ], 
-    correct: 2
-  },
-  {
-    id: 27, type: "mcq", 
-    text: "Which environmental factor contributes most directly to client comfort?",
-    options: [
-      "A) High humidity above 70%",
-      "B) Temperature between 20–23°C",
-      "C) Fluorescent lighting only",
-      "D) Continuous background noise"
-    ], 
-    correct: 1
-  },
-  {
-    id: 28, type: "mcq", 
-    text: "A crisis learner is most accurately categorized under:",
-    options: [
-      "A) Pedagogy",
-      "B) Androgogy",
-      "C) Gerogogy",
-      "D) Intrapersonal learning"
-    ], 
-    correct: 0
-  },
-  {
-    id: 29, type: "mcq", 
-    text: "Which nursing action best prevents latex sensitization?",
-    options: [
-      "A) Using oil-based hand creams under gloves",
-      "B) Prolonged glove use",
-      "C) Thorough handwashing after glove removal",
-      "D) Using powdered latex gloves"
-    ], 
-    correct: 2
-  },
-  {
-    id: 30, type: "mcq", 
-    text: "In the communication model, failure occurs primarily when:",
-    options: [
-      "A) The referent is clear",
-      "B) The channel is appropriate",
-      "C) Feedback is absent or misinterpreted",
-      "D) The message is brief"
-    ], 
-    correct: 2
-  }
+  { id: 1, type: "tf", text: "The highest stage of learning is achieved when the learner is able to recall information accurately.", correct: "خطأ" },
+  { id: 2, type: "tf", text: "Affective domain primarily involves learning by performing motor skills and physical manipulation.", correct: "خطأ" },
+  { id: 3, type: "tf", text: "Gerogogy learners often require structured guidance and frequent encouragement.", correct: "صح" },
+  { id: 4, type: "tf", text: "Literacy assessment should be conducted after implementing the teaching plan.", correct: "خطأ" },
+  { id: 5, type: "tf", text: "Motivation driven by fear of criticism produces optimal long-term learning outcomes.", correct: "خطأ" },
+  { id: 6, type: "tf", text: "Informal teaching requires written objectives and structured evaluation.", correct: "خطأ" },
+  { id: 7, type: "tf", text: "Latex sensitization is a toxic reaction caused by synthetic rubber compounds.", correct: "خطأ" },
+  { id: 8, type: "tf", text: "Carbon monoxide poisoning may present with flu-like symptoms without fever.", correct: "صح" },
+  { id: 9, type: "tf", text: "The RACE protocol prioritizes extinguishing the fire before activating the alarm system.", correct: "خطأ" },
+  { id: 10, type: "tf", text: "Restraints are recommended as an early preventive measure in confused older adults.", correct: "خطأ" },
+  { id: 11, type: "tf", text: "Sleep cycles typically alternate between REM and NREM phases approximately 4–6 times per night.", correct: "صح" },
+  { id: 12, type: "tf", text: "REM sleep is characterized by complete physiologic inactivity and absence of dreams.", correct: "خطأ" },
+  { id: 13, type: "tf", text: "Chronic sleep deprivation may impair wound healing and immune response.", correct: "صح" },
+  { id: 14, type: "tf", text: "Nonverbal communication is generally less revealing than verbal communication.", correct: "خطأ" },
+  { id: 15, type: "tf", text: "Feedback in the communication model is essential to validate message interpretation.", correct: "صح" },
+  { id: 16, type: "mcq", text: "Which of the following best represents independent use of learning?", options: ["A) Identifying information in a textbook", "B) Repeating instructions to another client", "C) Applying instructions without supervision", "D) Recognizing previously taught concepts"], correct: 2 },
+  { id: 17, type: "mcq", text: "A young adult learner is most likely to respond positively to:", options: ["A) Lengthy memorization exercises", "B) Passive lecture-only format", "C) Interactive simulations with immediate feedback", "D) Delayed evaluation and minimal guidance"], correct: 2 },
+  { id: 18, type: "mcq", text: "Which factor most directly affects a client’s readiness to learn?", options: ["A) Nurse’s educational level", "B) Room temperature", "C) Client’s pain level", "D) Hospital policies"], correct: 2 },
+  { id: 19, type: "mcq", text: "The term 'message code' in the communication model refers to:", options: ["A) The emotional tone of speech", "B) The structured arrangement of symbols forming meaning", "C) The feedback provided by the receiver", "D) The sociocultural background of the communicator"], correct: 1 },
+  { id: 20, type: "mcq", text: "Which statement best reflects congruency in communication?", options: ["A) Tone contradicts the spoken message", "B) Gestures reinforce verbal expression", "C) Message lacks emotional context", "D) Receiver ignores feedback"], correct: 1 },
+  { id: 21, type: "mcq", text: "In older adults, falls are most commonly associated with:", options: ["A) Excessive protein intake", "B) Hyperactivity", "C) Gait disturbances and antihypertensive medication", "D) Increased muscle mass"], correct: 2 },
+  { id: 22, type: "mcq", text: "Macro shock differs from micro shock in that it:", options: ["A) Occurs only in pediatric clients", "B) Involves higher electrical current exposure", "C) Is unrelated to grounding equipment", "D) Does not affect cardiac function"], correct: 1 },
+  { id: 23, type: "mcq", text: "The primary physiologic benefit of sleep related to tissue repair is:", options: ["A) Increased sensory alertness", "B) Protein synthesis enhancement", "C) Reduced REM cycles", "D) Elevated blood glucose"], correct: 1 },
+  { id: 24, type: "mcq", text: "Which sleep disorder is characterized by cessation of breathing?", options: ["A) Hypersomnia", "B) Parasomnia", "C) Hypopnea", "D) Sleep apnea"], correct: 3 },
+  { id: 25, type: "mcq", text: "Which is an example of metacommunication?", options: ["A) Writing a nursing report", "B) Raising an eyebrow during a statement", "C) Clarifying the intention behind a previous statement", "D) Administering medication"], correct: 1 },
+  { id: 26, type: "mcq", text: "Effective burn prevention in health institutions requires:", options: ["A) Locked emergency exits", "B) Minimal lighting", "C) Identified and accessible exits", "D) Avoiding fire drills"], correct: 2 },
+  { id: 27, type: "mcq", text: "Which environmental factor contributes most directly to client comfort?", options: ["A) High humidity above 70%", "B) Temperature between 20–23°C", "C) Fluorescent lighting only", "D) Continuous background noise"], correct: 1 },
+  { id: 28, type: "mcq", text: "A crisis learner is most accurately categorized under:", options: ["A) Pedagogy", "B) Androgogy", "C) Gerogogy", "D) Intrapersonal learning"], correct: 0 },
+  { id: 29, type: "mcq", text: "Which nursing action best prevents latex sensitization?", options: ["A) Using oil-based hand creams under gloves", "B) Prolonged glove use", "C) Thorough handwashing after glove removal", "D) Using powdered latex gloves"], correct: 2 },
+  { id: 30, type: "mcq", text: "In the communication model, failure occurs primarily when:", options: ["A) The referent is clear", "B) The channel is appropriate", "C) Feedback is absent or misinterpreted", "D) The message is brief"], correct: 2 }
 ];
 
 /* ===================== الحالة (State) ===================== */
@@ -1110,18 +1053,195 @@ let answers = new Array(TOTAL_QUESTIONS).fill(null);
 let currentPage = 0;
 let timeLeft = EXAM_TIME_MIN * 60;
 let cheatLog = {
-  tabSwitches: 0, focusLoss: 0, refreshAttempts: 0, 
-  forbiddenKeys: 0, devTools: 0, fullscreenExit: 0, 
-  resizeAttempts: 0, copyAttempts: 0, totalAwayTime: 0, events: []
+  tabSwitches: 0,
+  focusLoss: 0,
+  refreshAttempts: 0,
+  forbiddenKeys: 0,
+  devTools: 0,
+  fullscreenExit: 0,
+  resizeAttempts: 0,
+  copyAttempts: 0,
+  totalAwayTime: 0,
+  screenshotAttempts: 0,
+  pageExits: 0,
+  awayStart: null,
+  events: []
 };
-let awayStart = null;
 let examStartedAt = Date.now();
 let isExamFinished = false;
 
-/* ===================== المحرك الأساسي والحفظ التلقائي ===================== */
+/* ===================== أنظمة الحماية المتقدمة ===================== */
 
-// استعادة البيانات من localStorage
+// كشف أدوات المطور
+function detectDevTools() {
+  const start = performance.now();
+  debugger;
+  const end = performance.now();
+  if (end - start > 100) {
+    cheatLog.devTools++;
+    logViolation("أدوات مطور", "تم كشف فتح أدوات المطور", 'violation');
+  }
+}
+setInterval(detectDevTools, 1000);
+
+// كشف مغادرة الصفحة
+document.addEventListener("visibilitychange", () => {
+  if (isExamFinished) return;
+  
+  if (document.hidden) {
+    cheatLog.tabSwitches++;
+    cheatLog.awayStart = Date.now();
+    logViolation("مغادرة الصفحة", "تم مغادرة صفحة الامتحان (تبديل التبويب)", 'violation');
+    SoundSystem.playSound('violation');
+  } else {
+    if (cheatLog.awayStart) {
+      const awayTime = Math.floor((Date.now() - cheatLog.awayStart) / 1000);
+      cheatLog.totalAwayTime += awayTime;
+      cheatLog.awayStart = null;
+      logViolation("عودة للصفحة", `غبت لمدة ${awayTime} ثانية`, 'warning');
+    }
+  }
+});
+
+// كشف فقدان التركيز
+window.addEventListener("blur", () => {
+  if (isExamFinished) return;
+  cheatLog.focusLoss++;
+  cheatLog.awayStart = Date.now();
+  logViolation("فقدان التركيز", "تم النقر خارج الامتحان (ربما فتحت تطبيقاً آخر)", 'violation');
+  SoundSystem.playSound('violation');
+});
+
+// كشف محاولة إغلاق النافذة
+window.addEventListener("beforeunload", (e) => {
+  if (isExamFinished) return;
+  
+  cheatLog.pageExits++;
+  logViolation("محاولة خروج", "محاولة إغلاق نافذة الامتحان", 'violation');
+  SoundSystem.playSound('violation');
+  
+  e.preventDefault();
+  e.returnValue = "هل أنت متأكد من الخروج؟ سيتم تسجيل مخالفة وإنهاء الامتحان!";
+  return "هل أنت متأكد من الخروج؟ سيتم تسجيل مخالفة وإنهاء الامتحان!";
+});
+
+// كشف تغيير الرابط
+window.addEventListener("hashchange", (e) => {
+  if (isExamFinished) return;
+  cheatLog.forbiddenKeys++;
+  logViolation("تغيير الرابط", "محاولة تغيير رابط الصفحة", 'violation');
+  history.pushState(null, null, window.location.pathname);
+});
+
+window.addEventListener("popstate", (e) => {
+  if (isExamFinished) return;
+  cheatLog.forbiddenKeys++;
+  logViolation("تغيير الرابط", "محاولة العودة للصفحة السابقة", 'violation');
+  history.pushState(null, null, window.location.pathname);
+});
+
+// منع التصوير والتقاط الشاشة
+if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+  const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia;
+  navigator.mediaDevices.getDisplayMedia = function() {
+    cheatLog.screenshotAttempts++;
+    logViolation("تصوير", "محاولة تصوير الشاشة ممنوعة", 'violation');
+    SoundSystem.playSound('violation');
+    return Promise.reject(new Error("التصوير ممنوع"));
+  };
+}
+
+// منع التشغيل التلقائي
+document.addEventListener('play', function(e) {
+  e.preventDefault();
+  e.target.pause();
+  logViolation("صوت", "تم منع تشغيل الصوت التلقائي", 'warning');
+}, true);
+
+// منع تغيير حجم النافذة
+let lastWidth = window.innerWidth;
+let lastHeight = window.innerHeight;
+window.addEventListener('resize', function() {
+  if (isExamFinished) return;
+  const newWidth = window.innerWidth;
+  const newHeight = window.innerHeight;
+  if (Math.abs(newWidth - lastWidth) > 50 || Math.abs(newHeight - lastHeight) > 50) {
+    cheatLog.resizeAttempts++;
+    logViolation("تغيير حجم", "تم تغيير حجم النافذة بشكل ملحوظ", 'warning');
+  }
+});
+
+// منع الدخول في وضع ملء الشاشة
+document.addEventListener('fullscreenchange', function() {
+  if (isExamFinished) return;
+  if (document.fullscreenElement) {
+    cheatLog.fullscreenExit++;
+    logViolation("ملء الشاشة", "تم الدخول في وضع ملء الشاشة", 'warning');
+    document.exitFullscreen();
+  }
+});
+
+// منع السحب والإفلات
+document.addEventListener('dragstart', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+document.addEventListener('drop', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// منع القوائم المختصرة
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  cheatLog.forbiddenKeys++;
+  logViolation("قائمة مختصرة", "محاولة فتح القائمة المختصرة", 'warning');
+});
+
+// منع النسخ
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+  cheatLog.copyAttempts++;
+  logViolation("نسخ", "محاولة نسخ المحتوى ممنوعة", 'warning');
+});
+
+// منع اختصارات لوحة المفاتيح الخطيرة
+document.addEventListener('keydown', function(e) {
+  if (isExamFinished) return;
+  
+  const forbiddenCombos = [
+    e.key === 'F12',
+    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')),
+    (e.ctrlKey && (e.key === 'u' || e.key === 'p' || e.key === 'r' || e.key === 's')),
+    (e.altKey && e.key === 'Tab'),
+    (e.ctrlKey && e.shiftKey && e.key === 'Delete'),
+    (e.metaKey && e.altKey && e.key === 'I'),
+    (e.key === 'PrintScreen'),
+    (e.ctrlKey && e.key === 'c' && e.shiftKey)
+  ];
+  
+  if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.ctrlKey && e.key === 'F5')) {
+    e.preventDefault();
+    cheatLog.refreshAttempts++;
+    logViolation("تحديث", "محاولة تحديث الصفحة ممنوعة", 'violation');
+    SoundSystem.playSound('violation');
+  } else if (forbiddenCombos.some(combo => combo)) {
+    e.preventDefault();
+    cheatLog.forbiddenKeys++;
+    logViolation("مفاتيح ممنوعة", "تم ضغط مفاتيح ممنوعة", 'violation');
+    SoundSystem.playSound('violation');
+  }
+});
+
+/* ===================== المحرك الأساسي ===================== */
+
 function loadState() {
+  if (!canStartExam()) {
+    alert('لقد استنفدت جميع المحاولات المتاحة');
+    return false;
+  }
+  
   const saved = localStorage.getItem("exam_session");
   if (saved) {
     const data = JSON.parse(saved);
@@ -1135,169 +1255,60 @@ function loadState() {
   return false;
 }
 
-// حفظ البيانات في localStorage
 function saveState() {
   if (isExamFinished) return;
   const state = { answers, currentPage, timeLeft, cheatLog, examStartedAt };
   localStorage.setItem("exam_session", JSON.stringify(state));
 }
 
-// تشغيل الحفظ الدوري كل 2 ثانية
 setInterval(saveState, 2000);
 
-// تحديث شريط التقدم
 function updateProgress() {
   const answeredCount = answers.filter(a => a !== null).length;
   const progress = (answeredCount / TOTAL_QUESTIONS) * 100;
   document.getElementById('progressFill').style.width = `${progress}%`;
 }
 
-/* ===================== نظام المراقبة ===================== */
-
-function playWarningSound() {
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.3);
-  } catch(e) {}
-}
-
-function logViolation(type, msg) {
+function logViolation(type, msg, soundType = 'warning') {
   if (isExamFinished) return;
   
-  playWarningSound();
+  // تشغيل الصوت
+  SoundSystem.playSound(soundType);
+  
+  // تسجيل المخالفة
   cheatLog.events.push({
     t: formatMMSS(Math.floor((Date.now() - examStartedAt) / 1000)),
     type: type,
     message: msg
   });
 
+  // عرض التنبيه
   document.getElementById("alertMsg").textContent = msg;
   document.getElementById("alertOverlay").style.display = "flex";
   
+  // تحديث العداد
   const totalViolations = updateViolationUI();
   saveState();
 
+  // إنهاء الامتحان بعد 3 مخالفات
   if (totalViolations >= AUTO_TERMINATE_AT) {
     setTimeout(() => {
-        closeWarning();
-        submitExam(true);
+      closeWarning();
+      submitExam(true);
     }, 2000);
   }
 }
 
 function updateViolationUI() {
   const total = cheatLog.tabSwitches + cheatLog.focusLoss + cheatLog.refreshAttempts + 
-                cheatLog.forbiddenKeys + cheatLog.devTools + cheatLog.copyAttempts;
+                cheatLog.forbiddenKeys + cheatLog.devTools + cheatLog.copyAttempts + 
+                cheatLog.screenshotAttempts + cheatLog.pageExits;
   document.getElementById("violCount").textContent = total;
   return total;
 }
 
 function closeWarning() {
   document.getElementById("alertOverlay").style.display = "none";
-}
-
-/* ===================== المستشعرات (Sensors) ===================== */
-
-// 1. تغيير التبويب
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    cheatLog.tabSwitches++;
-    awayStart = Date.now();
-    logViolation("تبويب", "تم رصد مغادرة صفحة الامتحان");
-  } else if (awayStart) {
-    cheatLog.totalAwayTime += Math.floor((Date.now() - awayStart) / 1000);
-    awayStart = null;
-  }
-});
-
-// 2. فقدان التركيز
-window.addEventListener("blur", () => {
-  cheatLog.focusLoss++;
-  logViolation("تركيز", "فقدان التركيز (ربما فتحت تطبيقاً آخر)");
-});
-
-// 3. منع النسخ - محسّن
-document.addEventListener("copy", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  cheatLog.copyAttempts++;
-  logViolation("نسخ", "محاولة نسخ المحتوى ممنوعة");
-  return false;
-});
-
-// 4. منع القص واللصق والسحب
-document.addEventListener("cut", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  cheatLog.copyAttempts++;
-  logViolation("قص", "محاولة قص المحتوى ممنوعة");
-  return false;
-});
-
-document.addEventListener("paste", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  cheatLog.copyAttempts++;
-  logViolation("لصق", "محاولة لصق المحتوى ممنوعة");
-  return false;
-});
-
-document.addEventListener("dragstart", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  cheatLog.copyAttempts++;
-  logViolation("سحب", "محاولة سحب المحتوى ممنوعة");
-  return false;
-});
-
-document.addEventListener("selectstart", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  return false;
-});
-
-// 5. مفاتيح ممنوعة وتحديث - مع إضافة منع Ctrl+C و Ctrl+X و Ctrl+V
-document.addEventListener("keydown", (e) => {
-  // منع اختصارات النسخ والقص واللصق
-  if (e.ctrlKey && (e.key === 'c' || e.key === 'C' || e.key === 'x' || e.key === 'X' || e.key === 'v' || e.key === 'V')) {
-    e.preventDefault();
-    e.stopPropagation();
-    cheatLog.copyAttempts++;
-    logViolation("نسخ", "محاولة استخدام اختصار النسخ/القص/لصق ممنوعة");
-    return false;
-  }
-  
-  const forbidden = (e.key === 'F12') || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || 
-                    (e.ctrlKey && (e.key === 'u' || e.key === 'p' || e.key === 'r')) || (e.altKey && e.key === 'Tab');
-  
-  if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
-    e.preventDefault();
-    cheatLog.refreshAttempts++;
-    logViolation("تحديث", "محاولة تحديث الصفحة ممنوعة");
-  } else if (forbidden) {
-    e.preventDefault();
-    cheatLog.forbiddenKeys++;
-    logViolation("مفاتيح", "تم ضغط مفاتيح ممنوعة (أدوات مطور أو تبديل)");
-  }
-});
-
-/* ===================== إدارة واجهة الامتحان ===================== */
-
-function initExam() {
-  loadState();
-  buildStatusGrid();
-  renderPage();
-  startTimer();
-  updateViolationUI();
-  updateProgress();
 }
 
 function buildStatusGrid() {
@@ -1308,16 +1319,8 @@ function buildStatusGrid() {
     div.id = `qInd${i}`;
     div.className = "q-indicator" + (answers[i] !== null ? " answered" : "");
     div.textContent = i + 1;
-    div.onclick = () => jumpToQuestion(i);
+    // تم إزالة onclick لتعطيل التنقل بين الأسئلة
     grid.appendChild(div);
-  }
-}
-
-function jumpToQuestion(qIndex) {
-  const page = Math.floor(qIndex / Q_PER_PAGE);
-  if (page !== currentPage) {
-    currentPage = page;
-    renderPage();
   }
 }
 
@@ -1332,40 +1335,32 @@ function renderPage() {
     const box = document.createElement("div");
     box.className = "question-box";
     
-    // إضافة شارة نوع السؤال
     const typeIcon = q.type === "tf" ? 
       '<i class="fas fa-check-circle" style="color: var(--info);"></i> صح/خطأ' : 
       '<i class="fas fa-list-ul" style="color: var(--success);"></i> اختيار من متعدد';
     
-    // هنا يتم فك تشفير النص ليظهر بشكل طبيعي للمستخدم
-    const decodedText = decodeText(q.text);
-    
     box.innerHTML = `<h4>
       <span class="question-type-badge">${typeIcon}</span>
-      سؤال ${i+1}: ${decodedText}
+      سؤال ${i+1}: ${q.text}
     </h4>`;
 
     if (q.type === "tf") {
       ["صح", "خطأ"].forEach(opt => {
-        // فك تشفير الخيارات أيضاً
-        const decodedOpt = decodeText(opt);
         box.innerHTML += `
           <label class="option-item">
             <input type="radio" name="q${i}" value="${opt}" ${answers[i] === opt ? 'checked' : ''} onchange="saveAnswer(${i}, '${opt}')"> 
             <i class="fas ${opt === 'صح' ? 'fa-check-circle' : 'fa-times-circle'}" style="color: ${opt === 'صح' ? 'var(--success)' : 'var(--danger)'}; margin-left: 8px;"></i>
-            ${decodedOpt}
+            ${opt}
           </label>`;
       });
     } else {
       q.options.forEach((opt, idx) => {
         const icons = ['fa-star', 'fa-heart', 'fa-gem', 'fa-crown'];
-        // فك تشفير الخيارات
-        const decodedOpt = decodeText(opt);
         box.innerHTML += `
           <label class="option-item">
             <input type="radio" name="q${i}" value="${idx}" ${answers[i] == idx ? 'checked' : ''} onchange="saveAnswer(${i}, ${idx})"> 
             <i class="fas ${icons[idx % icons.length]}" style="color: var(--gold); margin-left: 8px;"></i>
-            ${decodedOpt}
+            ${opt}
           </label>`;
       });
     }
@@ -1381,7 +1376,6 @@ function saveAnswer(qIdx, val) {
   checkCompletion();
   updateProgress();
   
-  // تأثير احتفالي عند الإجابة
   const indicator = document.getElementById(`qInd${qIdx}`);
   indicator.style.transform = 'scale(1.3)';
   setTimeout(() => {
@@ -1410,7 +1404,6 @@ function nextPage() {
   }
 }
 
-/* ===================== المؤقت ===================== */
 function startTimer() {
   const timer = setInterval(() => {
     if (isExamFinished) { clearInterval(timer); return; }
@@ -1418,10 +1411,14 @@ function startTimer() {
     timeLeft--;
     document.getElementById("timeDisplay").textContent = formatMMSS(timeLeft);
 
-    // تنبيهات زمنية
-    if (timeLeft > 0 && timeLeft % 300 === 0) logViolation("وقت", `تنبيه: تبقى ${timeLeft/60} دقائق`);
-    if (timeLeft === 300) logViolation("وقت", "⚠️ تحذير: تبقى 5 دقائق فقط!");
-    if (timeLeft === 60) logViolation("وقت", "⚠️ تحذير: تبقى دقيقة واحدة فقط!");
+    if (timeLeft === 300) {
+      logViolation("وقت", "⚠️ تحذير: تبقى 5 دقائق فقط!", 'timeWarning');
+      SoundSystem.playSound('timeWarning');
+    }
+    if (timeLeft === 60) {
+      logViolation("وقت", "⚠️ تحذير: تبقى دقيقة واحدة فقط!", 'timeWarning');
+      SoundSystem.playSound('timeWarning');
+    }
 
     if (timeLeft <= 0) {
       clearInterval(timer);
@@ -1436,13 +1433,62 @@ function formatMMSS(sec) {
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-/* ===================== النهاية والتقرير المبسط ===================== */
+function setTheme(theme) {
+  document.body.className = theme + '-theme';
+  localStorage.setItem('exam_theme', theme);
+}
+
+function loadTheme() {
+  const savedTheme = localStorage.getItem('exam_theme') || 'default';
+  setTheme(savedTheme);
+}
+
+async function initExam() {
+  await loadAttempts();
+  
+  if (!canStartExam()) {
+    document.body.innerHTML = `
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 500px;">
+          <i class="fas fa-ban" style="font-size: 60px; color: var(--danger); margin-bottom: 20px;"></i>
+          <h2 style="color: var(--danger); margin-bottom: 15px;">لقد استنفدت جميع المحاولات</h2>
+          <p style="margin-bottom: 20px;">لا يمكنك بدء امتحان جديد من هذا الجهاز. يرجى التواصل مع المشرف.</p>
+          <button onclick="resetAttempts()" style="padding: 12px 30px; background: var(--gradient-1); color: white; border: none; border-radius: 10px; cursor: pointer;">
+            إعادة تعيين المحاولات (للمشرف فقط)
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  // تشغيل صوت البدء
+  SoundSystem.playSound('start');
+  
+  loadState();
+  buildStatusGrid();
+  renderPage();
+  startTimer();
+  updateViolationUI();
+  updateProgress();
+  collectDeviceInfo();
+}
+
 function submitExam(isTerminated) {
   if (isExamFinished) return;
   isExamFinished = true;
+  
+  // تشغيل صوت النهاية
+  SoundSystem.playSound('end');
+  
+  if (!isTerminated) {
+    useAttempt();
+  }
+  
   localStorage.removeItem("exam_session");
 
   let score = 0;
+  const answersDetail = [];
   
   questions.forEach((q, i) => {
     let isCorrect = false;
@@ -1452,6 +1498,12 @@ function submitExam(isTerminated) {
       isCorrect = answers[i] == q.correct;
     }
     if (isCorrect) score++;
+    answersDetail.push({
+      question: q.text,
+      userAnswer: answers[i],
+      correctAnswer: q.type === "tf" ? q.correct : q.options[q.correct],
+      isCorrect: isCorrect
+    });
   });
 
   const percentage = (score / TOTAL_QUESTIONS) * 100;
@@ -1461,82 +1513,125 @@ function submitExam(isTerminated) {
   document.getElementById("examMain").classList.add("hidden");
   document.getElementById("resultArea").classList.remove("hidden");
 
+  const violationData = {
+    'تغيير التبويب': cheatLog.tabSwitches,
+    'فقدان التركيز': cheatLog.focusLoss,
+    'تحديث': cheatLog.refreshAttempts,
+    'مفاتيح ممنوعة': cheatLog.forbiddenKeys,
+    'أدوات مطور': cheatLog.devTools,
+    'ملء الشاشة': cheatLog.fullscreenExit,
+    'تغيير حجم': cheatLog.resizeAttempts,
+    'نسخ': cheatLog.copyAttempts,
+    'تصوير': cheatLog.screenshotAttempts,
+    'محاولات خروج': cheatLog.pageExits
+  };
+
   let reportHtml = `
     <h2 style="text-align:center; font-size: clamp(1.5rem, 5vw, 2rem); margin-bottom: 20px;">
       ${isTerminated ? '❌ تم إنهاء الامتحان قسراً' : '✅ انتهى الامتحان'}
     </h2>
-    <div style="text-align:center; margin-bottom: 25px;">
-      <div style="font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; color: ${gradeColor}; text-shadow: 0 0 20px ${gradeColor};">
-        ${score} / ${TOTAL_QUESTIONS}
+    
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <i class="fas fa-star" style="font-size: 2rem; color: var(--gold); margin-bottom: 10px;"></i>
+        <h3>النتيجة</h3>
+        <div style="font-size: 2.5rem; font-weight: 900; color: ${gradeColor};">${score}</div>
+        <div>من أصل ${TOTAL_QUESTIONS}</div>
+        <div style="font-size: 1.2rem; margin-top: 10px;">${percentage.toFixed(1)}% - ${gradeText}</div>
       </div>
-      <div style="font-size: clamp(1.2rem, 4vw, 1.5rem); color: var(--dark); margin-top: 10px;">
-        النسبة: ${percentage.toFixed(1)}% - <span style="color: ${gradeColor};">${gradeText}</span>
+      
+      <div class="dashboard-card">
+        <i class="fas fa-clock" style="font-size: 2rem; color: var(--info); margin-bottom: 10px;"></i>
+        <h3>الوقت المستغرق</h3>
+        <div style="font-size: 2rem;">${formatMMSS(Math.floor((Date.now() - examStartedAt) / 1000))}</div>
+      </div>
+      
+      <div class="dashboard-card">
+        <i class="fas fa-shield-alt" style="font-size: 2rem; color: var(--danger); margin-bottom: 10px;"></i>
+        <h3>إجمالي المخالفات</h3>
+        <div style="font-size: 2rem;">${updateViolationUI()}</div>
+        <div style="font-size: 0.9rem; margin-top: 5px;">وقت الغياب: ${cheatLog.totalAwayTime} ثانية</div>
       </div>
     </div>
-    
-    <div style="background: linear-gradient(135deg, #f5f5f5, #ffffff); padding: clamp(15px, 4vw, 20px); border-radius: var(--border-radius-md); margin: 20px 0;">
+
+    <div style="background: linear-gradient(135deg, #f5f5f5, #ffffff); padding: 20px; border-radius: var(--border-radius-md); margin: 20px 0;">
       <h3 style="color: var(--primary-dark); margin-bottom: 15px;">
-        <i class="fas fa-trophy" style="color: var(--gold);"></i>
-        ملخص الأداء
+        <i class="fas fa-chart-pie" style="color: var(--gold);"></i>
+        تحليل المخالفات
       </h3>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
-        <div style="text-align: center;">
-          <i class="fas fa-check-circle" style="color: var(--success); font-size: clamp(1.5rem, 5vw, 2rem);"></i>
-          <div style="font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700;">${score}</div>
-          <div style="font-size: clamp(0.8rem, 3vw, 0.9rem);">إجابات صحيحة</div>
-        </div>
-        <div style="text-align: center;">
-          <i class="fas fa-times-circle" style="color: var(--danger); font-size: clamp(1.5rem, 5vw, 2rem);"></i>
-          <div style="font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700;">${TOTAL_QUESTIONS - score}</div>
-          <div style="font-size: clamp(0.8rem, 3vw, 0.9rem);">إجابات خاطئة</div>
-        </div>
-        <div style="text-align: center;">
-          <i class="fas fa-clock" style="color: var(--info); font-size: clamp(1.5rem, 5vw, 2rem);"></i>
-          <div style="font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 700;">${formatMMSS(Math.floor((Date.now() - examStartedAt) / 1000))}</div>
-          <div style="font-size: clamp(0.8rem, 3vw, 0.9rem);">الوقت المستغرق</div>
-        </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+        ${Object.entries(violationData).filter(([_, value]) => value > 0).map(([key, value]) => `
+          <div style="text-align: center; padding: 10px; background: rgba(0,0,0,0.05); border-radius: var(--border-radius-md);">
+            <div style="font-size: 1.5rem; font-weight: 700;">${value}</div>
+            <div style="font-size: 0.9rem;">${key}</div>
+          </div>
+        `).join('')}
       </div>
     </div>
-    
-    <hr style="margin: 25px 0; border: 1px solid #eee;">
-    
-    <h3 style="color: var(--primary-dark); margin-bottom: 20px;">
-      <i class="fas fa-shield-alt" style="color: var(--gold);"></i>
-      📊 تقرير سلوك المراقبة
+
+    <h3 style="color: var(--primary-dark); margin: 30px 0 20px;">
+      <i class="fas fa-list-check" style="color: var(--gold);"></i>
+      جدول مقارنة الإجابات
     </h3>
-    <p style="font-size: clamp(0.9rem, 3vw, 1.1rem); margin-bottom: 20px;">
-      <i class="fas fa-clock"></i> إجمالي مدة الغياب عن الصفحة: <b>${cheatLog.totalAwayTime} ثانية</b>
-    </p>
-    <div class="table-responsive">
-      <table>
-        <tr><th><i class="fas fa-chart-bar"></i> النوع</th><th><i class="fas fa-hashtag"></i> العدد</th></tr>
-        <tr><td><i class="fas fa-window-restore"></i> تغيير التبويب</td><td>${cheatLog.tabSwitches}</td></tr>
-        <tr><td><i class="fas fa-sync-alt"></i> تحديث الصفحة</td><td>${cheatLog.refreshAttempts}</td></tr>
-        <tr><td><i class="fas fa-copy"></i> نسخ محتوى</td><td>${cheatLog.copyAttempts}</td></tr>
-        <tr><td><i class="fas fa-keyboard"></i> مفاتيح ممنوعة</td><td>${cheatLog.forbiddenKeys}</td></tr>
+    
+    <div style="overflow-x: auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>السؤال</th>
+            <th>إجابتك</th>
+            <th>الإجابة الصحيحة</th>
+            <th>النتيجة</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${answersDetail.map((detail, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td style="max-width: 300px;">${detail.question.substring(0, 50)}${detail.question.length > 50 ? '...' : ''}</td>
+              <td style="color: ${detail.isCorrect ? 'var(--success)' : 'var(--danger)'};">${detail.userAnswer !== null ? (typeof detail.userAnswer === 'number' ? String.fromCharCode(65 + detail.userAnswer) + ') ' + questions[i].options[detail.userAnswer] : detail.userAnswer) : 'لم يجب'}</td>
+              <td>${detail.correctAnswer}</td>
+              <td style="text-align: center;">
+                ${detail.isCorrect ? 
+                  '<i class="fas fa-check-circle" style="color: var(--success);"></i>' : 
+                  '<i class="fas fa-times-circle" style="color: var(--danger);"></i>'}
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
       </table>
     </div>
 
     <h3 style="color: var(--primary-dark); margin: 30px 0 20px;">
       <i class="fas fa-history" style="color: var(--gold);"></i>
-      🕒 الجدول الزمني للمخالفات
+      سجل المخالفات
     </h3>
-    <div class="table-responsive">
-      <table>
-        <thead><tr><th>#</th><th>الوقت</th><th>النوع</th><th>الوصف</th></tr></thead>
+    
+    <div style="overflow-x: auto;">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الوقت</th>
+            <th>النوع</th>
+            <th>الوصف</th>
+          </tr>
+        </thead>
         <tbody>
           ${cheatLog.events.map((ev, i) => `
             <tr>
-              <td><span class="badge" style="padding: 5px 8px; font-size: 0.8rem;">${i+1}</span></td>
-              <td><i class="fas fa-clock"></i> ${ev.t}</td>
-              <td><span class="badge" style="background: var(--primary-light); color: #fff; padding: 5px 8px; font-size: 0.8rem;">${ev.type}</span></td>
-              <td style="font-size: 0.9rem;">${ev.message}</td>
+              <td>${i+1}</td>
+              <td>${ev.t}</td>
+              <td><span style="background: var(--primary-light); color: white; padding: 3px 8px; border-radius: 12px;">${ev.type}</span></td>
+              <td>${ev.message}</td>
             </tr>
-          `).join('') || '<tr><td colspan="4" style="text-align:center; padding: 25px;"><i class="fas fa-check-circle" style="color: var(--success); font-size: 2rem;"></i><br>لم يتم تسجيل مخالفات ✅</td></tr>'}
+          `).join('')}
         </tbody>
       </table>
     </div>
-    <button onclick="location.reload()" style="margin-top:30px; width:100%; padding:15px; background:var(--gradient-1); color:#fff; border:none; border-radius:var(--border-radius-xl); cursor:pointer; font-size: clamp(1rem, 4vw, 1.2rem); font-weight: 700;">
+
+    <button onclick="startNewExam()" style="margin-top:30px; width:100%; padding:15px; background:var(--gradient-1); color:#fff; border:none; border-radius:var(--border-radius-xl); cursor:pointer; font-size: clamp(1rem, 4vw, 1.2rem); font-weight: 700;">
       <i class="fas fa-redo-alt"></i>
       بدء امتحان جديد
     </button>
@@ -1544,7 +1639,16 @@ function submitExam(isTerminated) {
   document.getElementById("finalReport").innerHTML = reportHtml;
 }
 
-// البدء
+function startNewExam() {
+  if (attempts.current <= attempts.max) {
+    location.reload();
+  } else {
+    alert('لقد استنفدت جميع المحاولات المتاحة');
+  }
+}
+
+// بدء التشغيل
+loadTheme();
 initExam();
 </script>
 
