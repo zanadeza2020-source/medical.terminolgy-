@@ -138,7 +138,7 @@
     transition: background 0.3s ease, color 0.3s ease;
   }
 
-  /* الهيدر المتطور - أنيق ومضغوط */
+  /* الهيدر المتطور */
   .header {
     background: rgba(255,255,255,var(--bg-opacity));
     backdrop-filter: blur(10px);
@@ -173,14 +173,128 @@
     font-size: 1.3rem;
   }
 
-  .stats-grid {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
+  /* القائمة المنسدلة للثيمات */
+  .theme-dropdown {
+    position: relative;
+    display: inline-block;
   }
 
+  .theme-dropdown-btn {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--dark);
+    transition: var(--transition-smooth);
+  }
+
+  .theme-dropdown-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  .theme-dropdown-btn i {
+    color: var(--gold);
+  }
+
+  .theme-dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    min-width: 150px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1001;
+    padding: 8px 0;
+    margin-top: 5px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+
+  .theme-dropdown:hover .theme-dropdown-content {
+    display: block;
+  }
+
+  .theme-option {
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+
+  .theme-option:hover {
+    background: rgba(0,0,0,0.05);
+  }
+
+  .theme-option i {
+    width: 20px;
+  }
+
+  .theme-option.default i { color: #5e35b1; }
+  .theme-option.dark i { color: #333; }
+  .theme-option.gold i { color: #bf9b30; }
+  .theme-option.medical i { color: #00695c; }
+
+  /* شبكة المعلومات - 2x2 */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    background: rgba(0,0,0,0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 8px 12px;
+    border-radius: 12px;
+    margin: 0 10px;
+    min-width: 250px;
+  }
+
+  .info-grid-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .info-grid-item i {
+    color: var(--gold);
+    font-size: 0.9rem;
+    width: 16px;
+  }
+
+  .info-grid-item span {
+    font-weight: 600;
+  }
+
+  .info-grid-item .label {
+    color: var(--dark);
+    opacity: 0.8;
+    margin-left: 2px;
+  }
+
+  /* شريط المعلومات القديم - مخفي */
+  .info-bar {
+    display: none;
+  }
+
+  /* باقي التنسيقات كما هي */
   .badge {
     padding: 6px 12px;
     border-radius: 30px;
@@ -198,10 +312,6 @@
     white-space: nowrap;
   }
 
-  .badge i {
-    font-size: 0.9rem;
-  }
-
   .timer-badge {
     border-color: var(--danger);
     color: var(--danger);
@@ -214,64 +324,6 @@
     background: rgba(255,255,255,0.9);
   }
 
-  /* شريط المعلومات المتطور - أنيق */
-  .info-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px 16px;
-    background: rgba(0,0,0,0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    font-size: 0.85rem;
-    color: var(--dark);
-    justify-content: center;
-  }
-
-  .info-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 10px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 30px;
-    transition: var(--transition-smooth);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .info-item i {
-    color: var(--gold);
-    font-size: 0.9rem;
-  }
-
-  /* محدد الثيمات - مضغوط */
-  .theme-selector {
-    display: flex;
-    gap: 4px;
-  }
-
-  .theme-btn {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid var(--white);
-    cursor: pointer;
-    transition: var(--transition-smooth);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .theme-btn:hover {
-    transform: scale(1.15);
-    border-color: var(--gold);
-  }
-
-  .theme-btn.default { background: linear-gradient(135deg, #667eea, #764ba2); }
-  .theme-btn.dark { background: linear-gradient(135deg, #333, #000); }
-  .theme-btn.gold { background: linear-gradient(135deg, #bf9b30, #a67c00); }
-  .theme-btn.medical { background: linear-gradient(135deg, #00695c, #004d40); }
-
-  /* الحاوية الرئيسية */
   .container {
     padding: 16px 20px;
     max-width: 1000px;
@@ -281,7 +333,6 @@
     position: relative;
   }
 
-  /* بطاقات الأسئلة - أنيقة ومتوسطة الحجم */
   .question-box {
     background: rgba(255,255,255,var(--bg-opacity));
     backdrop-filter: blur(10px);
@@ -326,12 +377,6 @@
     word-break: break-word;
   }
 
-  .question-box h4 i {
-    color: var(--gold);
-    font-size: 1.2rem;
-  }
-
-  /* شريط التقدم المتحرك - أنيق */
   .progress-container {
     width: 100%;
     height: 6px;
@@ -351,7 +396,6 @@
     overflow: hidden;
   }
 
-  /* خيارات الأسئلة - متوسطة الحجم */
   .option-item {
     display: flex;
     align-items: center;
@@ -367,8 +411,6 @@
     font-weight: 500;
     font-size: 0.95rem;
     word-break: break-word;
-    position: relative;
-    overflow: hidden;
   }
 
   .option-item:hover {
@@ -390,7 +432,6 @@
     flex-shrink: 0;
   }
 
-  /* مؤشرات الأسئلة - مربعات متوسطة */
   .status-box {
     display: flex;
     flex-wrap: wrap;
@@ -431,7 +472,6 @@
     border-color: var(--gold);
   }
 
-  /* أزرار التنقل - متوسطة */
   .btn-next {
     padding: 10px 30px;
     font-size: 1rem;
@@ -461,7 +501,6 @@
     opacity: 0.5;
   }
 
-  /* شاشة التنبيه - سلسة وغير ثقيلة */
   .overlay {
     position: fixed;
     inset: 0;
@@ -519,7 +558,6 @@
     box-shadow: var(--shadow-md);
   }
 
-  /* تقرير النتائج */
   .report-card {
     background: rgba(255,255,255,0.98);
     backdrop-filter: blur(10px);
@@ -533,7 +571,6 @@
     width: 100%;
   }
 
-  /* لوحة المعلومات */
   .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -557,12 +594,6 @@
     box-shadow: var(--shadow-md);
   }
 
-  .dashboard-card i {
-    font-size: 1.8rem;
-    margin-bottom: 8px;
-  }
-
-  /* جدول المقارنة */
   .comparison-table {
     width: 100%;
     border-collapse: collapse;
@@ -586,7 +617,6 @@
     border-bottom: 1px solid #eee;
   }
 
-  /* توقيع المهندس نادر */
   .signature {
     text-align: center;
     margin-top: 25px;
@@ -618,37 +648,21 @@
 
   .hidden { display: none; }
 
-  /* تحسينات للشاشات الصغيرة */
   @media (max-width: 480px) {
     .header {
       flex-direction: column;
       align-items: stretch;
     }
     
-    .stats-grid {
-      justify-content: center;
+    .info-grid {
       width: 100%;
-    }
-    
-    .info-bar {
-      flex-direction: column;
-    }
-    
-    .info-item {
-      width: 100%;
+      margin: 5px 0;
     }
     
     .q-indicator {
       width: 34px;
       height: 34px;
       font-size: 0.85rem;
-    }
-  }
-
-  @media (min-width: 481px) and (max-width: 768px) {
-    .q-indicator {
-      width: 36px;
-      height: 36px;
     }
   }
 </style>
@@ -662,43 +676,56 @@
     <i class="fas fa-gem"></i>
     📋 امتحان المصطلحات
   </div>
-  <div class="stats-grid">
-    <!-- محدد الثيمات -->
-    <div class="theme-selector">
-      <div class="theme-btn default" onclick="setTheme('default')" title="الثيم الافتراضي"></div>
-      <div class="theme-btn dark" onclick="setTheme('dark')" title="الثيم الداكن"></div>
-      <div class="theme-btn gold" onclick="setTheme('gold')" title="الثيم الذهبي"></div>
-      <div class="theme-btn medical" onclick="setTheme('medical')" title="الثيم الطبي"></div>
+  
+  <!-- قائمة الثيمات المنسدلة -->
+  <div class="theme-dropdown">
+    <div class="theme-dropdown-btn">
+      <i class="fas fa-palette"></i>
+      <span>تغيير اللون</span>
+      <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
     </div>
-    
-    <div class="badge viol-badge">
-      <i class="fas fa-exclamation-triangle"></i>
-      <span id="violCount">0</span>/3
+    <div class="theme-dropdown-content">
+      <div class="theme-option default" onclick="setTheme('default')">
+        <i class="fas fa-circle" style="color: #5e35b1;"></i>
+        <span>الافتراضي</span>
+      </div>
+      <div class="theme-option dark" onclick="setTheme('dark')">
+        <i class="fas fa-circle" style="color: #333;"></i>
+        <span>داكن</span>
+      </div>
+      <div class="theme-option gold" onclick="setTheme('gold')">
+        <i class="fas fa-circle" style="color: #bf9b30;"></i>
+        <span>ذهبي</span>
+      </div>
+      <div class="theme-option medical" onclick="setTheme('medical')">
+        <i class="fas fa-circle" style="color: #00695c;"></i>
+        <span>طبي</span>
+      </div>
     </div>
-    <div class="badge timer-badge">
+  </div>
+
+  <!-- شبكة المعلومات 2x2 -->
+  <div class="info-grid">
+    <div class="info-grid-item">
       <i class="fas fa-hourglass-half"></i>
+      <span class="label">الموقت:</span>
       <span id="timeDisplay">30:00</span>
     </div>
-    <div class="badge timer-badge">
+    <div class="info-grid-item">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span class="label">المخالفات:</span>
+      <span id="violCount">0</span>/3
+    </div>
+    <div class="info-grid-item">
       <i class="fas fa-redo-alt"></i>
+      <span class="label">المحاولات:</span>
       <span id="attemptsLeft">3</span>/3
     </div>
-  </div>
-</div>
-
-<!-- شريط المعلومات -->
-<div class="info-bar" id="infoBar">
-  <div class="info-item">
-    <i class="fas fa-clock"></i>
-    <span id="currentTime"></span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-wifi"></i>
-    <span id="connectionStatus">جاري الفحص...</span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-battery-three-quarters"></i>
-    <span id="batteryStatus">البطارية...</span>
+    <div class="info-grid-item">
+      <i class="fas fa-wifi"></i>
+      <span class="label">حالة الجهاز:</span>
+      <span id="connectionStatus">متصل</span>
+    </div>
   </div>
 </div>
 
@@ -810,7 +837,7 @@ const questions = [
   { id: 50, type: "mcq", text: "Lymphadenitis most commonly indicates:", options: ["A) Malignancy", "B) Trauma", "C) Infection", "D) Degeneration"], correct: 2 }
 ];
 
-/* ===================== نظام الصوت المتقدم - يعمل حتى مع كتم الصوت ===================== */
+/* ===================== نظام الصوت المتقدم ===================== */
 const SoundSystem = {
   audioContext: null,
   initialized: false,
@@ -838,8 +865,6 @@ const SoundSystem = {
       
       oscillator.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
-      
-      // تجاهل إعدادات كتم الصوت في الجهاز
       gainNode.gain.value = 0.4;
       
       switch(type) {
@@ -849,7 +874,6 @@ const SoundSystem = {
           oscillator.start();
           oscillator.stop(this.audioContext.currentTime + 0.2);
           break;
-          
         case 'violation':
           oscillator.frequency.setValueAtTime(880, this.audioContext.currentTime);
           oscillator.frequency.setValueAtTime(440, this.audioContext.currentTime + 0.1);
@@ -857,7 +881,6 @@ const SoundSystem = {
           oscillator.start();
           oscillator.stop(this.audioContext.currentTime + 0.3);
           break;
-          
         case 'timeWarning':
           oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime);
           oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime + 0.15);
@@ -865,7 +888,6 @@ const SoundSystem = {
           oscillator.start();
           oscillator.stop(this.audioContext.currentTime + 0.45);
           break;
-          
         case 'start':
           oscillator.frequency.setValueAtTime(523.25, this.audioContext.currentTime);
           oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.15);
@@ -873,7 +895,6 @@ const SoundSystem = {
           oscillator.start();
           oscillator.stop(this.audioContext.currentTime + 0.45);
           break;
-          
         case 'end':
           oscillator.frequency.setValueAtTime(783.99, this.audioContext.currentTime);
           oscillator.frequency.setValueAtTime(659.25, this.audioContext.currentTime + 0.15);
@@ -894,7 +915,6 @@ let attempts = {
 };
 
 function loadAttempts() {
-  // استخدام معرف جلسة فريد لكل مستخدم
   const saved = localStorage.getItem(`exam_attempts_${SESSION_ID}`);
   if (saved) {
     attempts = JSON.parse(saved);
@@ -933,47 +953,16 @@ function resetAttempts() {
   location.reload();
 }
 
-/* ===================== معلومات الوقت والبطارية والاتصال ===================== */
-function updateCurrentTime() {
-  const now = new Date();
-  const options = { 
-    hour: '2-digit', 
-    minute: '2-digit', 
-    second: '2-digit',
-    hour12: true 
-  };
-  document.getElementById('currentTime').textContent = now.toLocaleString('ar-SA', options);
-}
-
+/* ===================== تحديث حالة الاتصال ===================== */
 function updateConnectionStatus() {
   const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const statusSpan = document.getElementById('connectionStatus');
+  
   if (connection) {
     const type = connection.effectiveType || '4G';
-    document.getElementById('connectionStatus').textContent = `متصل (${type})`;
+    statusSpan.textContent = `متصل (${type})`;
   } else {
-    document.getElementById('connectionStatus').textContent = navigator.onLine ? 'متصل' : 'غير متصل';
-  }
-}
-
-async function updateBatteryInfo() {
-  if (navigator.getBattery) {
-    try {
-      const battery = await navigator.getBattery();
-      
-      function updateBatteryDisplay() {
-        const level = Math.round(battery.level * 100);
-        const charging = battery.charging ? '⚡' : '';
-        document.getElementById('batteryStatus').textContent = `${level}% ${charging}`;
-      }
-      
-      updateBatteryDisplay();
-      battery.addEventListener('levelchange', updateBatteryDisplay);
-      battery.addEventListener('chargingchange', updateBatteryDisplay);
-    } catch (e) {
-      document.getElementById('batteryStatus').textContent = 'غير متاحة';
-    }
-  } else {
-    document.getElementById('batteryStatus').textContent = 'غير مدعومة';
+    statusSpan.textContent = navigator.onLine ? 'متصل' : 'غير متصل';
   }
 }
 
@@ -1000,7 +989,6 @@ let isExamFinished = false;
 
 /* ===================== أنظمة الحماية ===================== */
 
-// كشف أدوات المطور
 function detectDevTools() {
   const start = performance.now();
   debugger;
@@ -1012,33 +1000,32 @@ function detectDevTools() {
 }
 setInterval(detectDevTools, 2000);
 
-// كشف مغادرة الصفحة
+// كشف مغادرة الصفحة - مخالفة واحدة فقط
 document.addEventListener("visibilitychange", () => {
   if (isExamFinished) return;
   
   if (document.hidden) {
     cheatLog.tabSwitches++;
     cheatLog.awayStart = Date.now();
-    logViolation("مغادرة", "تبديل التبويب", 'violation');
+    logViolation("مغادرة", "تم مغادرة صفحة الامتحان", 'violation');
   } else {
     if (cheatLog.awayStart) {
       const awayTime = Math.floor((Date.now() - cheatLog.awayStart) / 1000);
       cheatLog.totalAwayTime += awayTime;
       cheatLog.awayStart = null;
-      logViolation("عودة", `غبت ${awayTime} ث`, 'warning');
     }
   }
 });
 
-// كشف فقدان التركيز
+// كشف فقدان التركيز - مخالفة واحدة فقط
 window.addEventListener("blur", () => {
   if (isExamFinished) return;
   cheatLog.focusLoss++;
   cheatLog.awayStart = Date.now();
-  logViolation("فقدان تركيز", "النقر خارج الامتحان", 'violation');
+  logViolation("فقدان تركيز", "تم النقر خارج الامتحان", 'violation');
 });
 
-// كشف محاولة إغلاق النافذة
+// كشف محاولة إغلاق النافذة - مخالفة واحدة فقط
 window.addEventListener("beforeunload", (e) => {
   if (isExamFinished) return;
   cheatLog.pageExits++;
@@ -1314,10 +1301,9 @@ function initExam() {
   
   SoundSystem.playSound('start');
   
-  updateCurrentTime();
-  setInterval(updateCurrentTime, 1000);
+  // تحديث حالة الاتصال كل 3 ثوان
   updateConnectionStatus();
-  updateBatteryInfo();
+  setInterval(updateConnectionStatus, 3000);
   
   loadState();
   buildStatusGrid();
