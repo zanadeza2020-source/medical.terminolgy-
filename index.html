@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -203,7 +204,7 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
   }
 
-  /* شريط المعلومات المتطور */
+  /* شريط المعلومات المبسط */
   .info-bar {
     display: flex;
     flex-wrap: wrap;
@@ -215,6 +216,7 @@
     border-bottom: 1px solid rgba(255,255,255,0.1);
     font-size: clamp(0.8rem, 3vw, 0.9rem);
     color: var(--dark);
+    justify-content: center;
   }
 
   .info-item {
@@ -412,7 +414,7 @@
     border: 2px solid transparent;
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
-    /* تم إزالة cursor: pointer لتعطيل التنقل */
+    pointer-events: none; /* تعطيل التنقل بين الأسئلة */
   }
 
   .q-indicator.answered {
@@ -420,14 +422,6 @@
     color: #fff;
     border-color: var(--gold);
     animation: pulse 2s infinite;
-  }
-
-  .q-indicator.correct {
-    background: var(--gradient-3);
-  }
-
-  .q-indicator.wrong {
-    background: var(--gradient-2);
   }
 
   @keyframes pulse {
@@ -608,11 +602,6 @@
       transform: none;
     }
   }
-
-  /* تعطيل النقر على مؤشرات الأسئلة */
-  .q-indicator {
-    pointer-events: none;
-  }
 </style>
 </head>
 
@@ -648,35 +637,15 @@
   </div>
 </div>
 
-<!-- شريط المعلومات المتطور -->
+<!-- شريط المعلومات المبسط (فقط الوقت + حالة الاتصال) -->
 <div class="info-bar" id="infoBar">
-  <div class="info-item">
-    <i class="fas fa-globe"></i>
-    <span id="ipAddress">جاري تحديد IP...</span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-map-marker-alt"></i>
-    <span id="location">جاري تحديد الموقع...</span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-wifi"></i>
-    <span id="connectionStatus">جاري فحص الاتصال...</span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-tachometer-alt"></i>
-    <span id="speedTest">سرعة الإنترنت: جاري القياس...</span>
-  </div>
   <div class="info-item">
     <i class="fas fa-clock"></i>
     <span id="currentTime"></span>
   </div>
   <div class="info-item">
-    <i class="fas fa-battery-three-quarters"></i>
-    <span id="batteryStatus">البطارية: جاري الفحص...</span>
-  </div>
-  <div class="info-item">
-    <i class="fas fa-device"></i>
-    <span id="deviceInfo"></span>
+    <i class="fas fa-wifi"></i>
+    <span id="connectionStatus">جاري فحص الاتصال...</span>
   </div>
 </div>
 
@@ -727,11 +696,68 @@
 
 <script>
 /* ===================== الإعدادات الأساسية ===================== */
-const TOTAL_QUESTIONS = 30;
-const Q_PER_PAGE = 2;
+const TOTAL_QUESTIONS = 50; // 20 صح/خطأ + 30 اختيار من متعدد
+const Q_PER_PAGE = 2; // سؤالين في كل صفحة (سؤال صح/خطأ + سؤال اختيار من متعدد)
 const EXAM_TIME_MIN = 30;
 const AUTO_TERMINATE_AT = 3;
 const MAX_ATTEMPTS = 3;
+
+/* ===================== الأسئلة الجديدة ===================== */
+const questions = [
+  // 20 سؤال صح/خطأ (1-20)
+  { id: 1, type: "tf", text: "The lymphatic system is a closed circulatory system similar to the cardiovascular system.", correct: "خطأ" },
+  { id: 2, type: "tf", text: "The thymus is composed primarily of lymphoid tissue but functions as an endocrine gland.", correct: "صح" },
+  { id: 3, type: "tf", text: "Peyer's patches are located in the jejunum.", correct: "خطأ" },
+  { id: 4, type: "tf", text: "The spleen has a hemolytic function.", correct: "صح" },
+  { id: 5, type: "tf", text: "Lymphadenopathy specifically refers to inflammation of lymph nodes.", correct: "خطأ" },
+  { id: 6, type: "tf", text: "Hyperplasia and hypertrophy both describe an increase in cell number.", correct: "خطأ" },
+  { id: 7, type: "tf", text: "Osteomalacia and rickets describe the same pathologic process in different age groups.", correct: "صح" },
+  { id: 8, type: "tf", text: "The appendicular skeleton protects the brain and spinal cord.", correct: "خطأ" },
+  { id: 9, type: "tf", text: "The axial skeleton includes ribs, sternum, and vertebrae.", correct: "صح" },
+  { id: 10, type: "tf", text: "Yellow bone marrow has a hemopoietic function.", correct: "خطأ" },
+  { id: 11, type: "tf", text: "A transverse plane divides the body into anterior and posterior portions.", correct: "خطأ" },
+  { id: 12, type: "tf", text: "Dorsal and posterior always have identical meanings.", correct: "خطأ" },
+  { id: 13, type: "tf", text: "A herniated disk results from inflammation of the periosteum.", correct: "خطأ" },
+  { id: 14, type: "tf", text: "Rheumatoid arthritis is an autoimmune disorder.", correct: "صح" },
+  { id: 15, type: "tf", text: "Lymphoscintigraphy evaluates electrical activity of lymph nodes.", correct: "خطأ" },
+  { id: 16, type: "tf", text: "The ventricles have thinner walls than the atria.", correct: "خطأ" },
+  { id: 17, type: "tf", text: "Endocrine glands release their secretions directly into ducts.", correct: "خطأ" },
+  { id: 18, type: "tf", text: "Osteonecrosis is caused by insufficient blood supply.", correct: "صح" },
+  { id: 19, type: "tf", text: "A greenstick fracture is typically seen in adults.", correct: "خطأ" },
+  { id: 20, type: "tf", text: "Splenomegaly may result from infectious disease.", correct: "صح" },
+  
+  // 30 سؤال اختيار من متعدد (21-50)
+  { id: 21, type: "mcq", text: "A condition characterized by abnormal softening of cartilage is:", options: ["A) Chondroma", "B) Chondromalacia", "C) Costochondritis", "D) Osteoarthritis"], correct: 1 },
+  { id: 22, type: "mcq", text: "Which structure filters microorganisms from the blood AND destroys worn-out erythrocytes?", options: ["A) Thymus", "B) Peyer's patches", "C) Spleen", "D) Lymph nodes"], correct: 2 },
+  { id: 23, type: "mcq", text: "Which cavity contains organs that maintain homeostasis and lies anteriorly?", options: ["A) Dorsal cavity", "B) Cranial cavity", "C) Ventral cavity", "D) Spinal cavity"], correct: 2 },
+  { id: 24, type: "mcq", text: "Enlargement due to increase in cell size but not number is:", options: ["A) Hyperplasia", "B) Dysplasia", "C) Hypertrophy", "D) Anaplasia"], correct: 2 },
+  { id: 25, type: "mcq", text: "The coronary arteries primarily supply:", options: ["A) Pericardium", "B) Myocardium", "C) Endocardium", "D) Interatrial septum"], correct: 1 },
+  { id: 26, type: "mcq", text: "Which term indicates abnormal narrowing?", options: ["A) -malacia", "B) -stenosis", "C) -sclerosis", "D) -megaly"], correct: 1 },
+  { id: 27, type: "mcq", text: "Which organ is located inferior to the diaphragm and posterior to the stomach?", options: ["A) Liver", "B) Pancreas", "C) Spleen", "D) Thymus"], correct: 2 },
+  { id: 28, type: "mcq", text: "A benign tumor formed by abnormal lymphatic vessels is:", options: ["A) Lymphadenitis", "B) Lymphangioma", "C) Lymphadenopathy", "D) Lymphoscintigraphy"], correct: 1 },
+  { id: 29, type: "mcq", text: "Which condition is described as degenerative joint disease?", options: ["A) Rheumatoid arthritis", "B) Gout", "C) Osteoarthritis", "D) Synovitis"], correct: 2 },
+  { id: 30, type: "mcq", text: "A condition involving uric acid crystal deposits is:", options: ["A) RA", "B) Osteoporosis", "C) Gouty arthritis", "D) Ankylosis"], correct: 2 },
+  { id: 31, type: "mcq", text: "Which bone marrow type stores fat?", options: ["A) Red marrow", "B) Spongy marrow", "C) Yellow marrow", "D) Hemopoietic marrow"], correct: 2 },
+  { id: 32, type: "mcq", text: "Which direction term means toward the head?", options: ["A) Caudal", "B) Inferior", "C) Cephalic", "D) Distal"], correct: 2 },
+  { id: 33, type: "mcq", text: "Splenorrhagia refers to:", options: ["A) Enlargement of spleen", "B) Inflammation of spleen", "C) Bleeding from spleen", "D) Tumor of spleen"], correct: 2 },
+  { id: 34, type: "mcq", text: "The structure that separates thoracic and abdominal cavities is the:", options: ["A) Sternum", "B) Diaphragm", "C) Pleura", "D) Mediastinum"], correct: 1 },
+  { id: 35, type: "mcq", text: "A slipped disk most directly affects:", options: ["A) Joint capsule", "B) Bone marrow", "C) Spinal nerve roots", "D) Synovial membrane"], correct: 2 },
+  { id: 36, type: "mcq", text: "Which suffix indicates visual examination?", options: ["A) -gram", "B) -plasty", "C) -scopy", "D) -graphy"], correct: 2 },
+  { id: 37, type: "mcq", text: "The thymus is located:", options: ["A) Posterior to stomach", "B) Superior to heart", "C) Inferior to liver", "D) Inside spleen"], correct: 1 },
+  { id: 38, type: "mcq", text: "A fracture with bone splintering is:", options: ["A) Open fracture", "B) Greenstick fracture", "C) Comminuted fracture", "D) Simple fracture"], correct: 2 },
+  { id: 39, type: "mcq", text: "Lymph is eventually returned to:", options: ["A) Arterial circulation", "B) Capillary beds", "C) Venous circulation", "D) Lymph nodes"], correct: 2 },
+  { id: 40, type: "mcq", text: "Which condition involves abnormal hardening?", options: ["A) -malacia", "B) -sclerosis", "C) -stenosis", "D) -plasia"], correct: 1 },
+  { id: 41, type: "mcq", text: "Which term indicates surgical fusion of bones?", options: ["A) Arthrolysis", "B) Arthrodesis", "C) Arthroscopy", "D) Arthroplasty"], correct: 1 },
+  { id: 42, type: "mcq", text: "Osteopenia indicates:", options: ["A) Excess bone density", "B) Bone infection", "C) Reduced bone density", "D) Bone tumor"], correct: 2 },
+  { id: 43, type: "mcq", text: "The atria are best described as:", options: ["A) Pumping chambers", "B) Receiving chambers", "C) Septal structures", "D) Coronary vessels"], correct: 1 },
+  { id: 44, type: "mcq", text: "Which term indicates inflammation of synovial membrane?", options: ["A) Synovectomy", "B) Synovitis", "C) Synovialgia", "D) Synovectomy"], correct: 1 },
+  { id: 45, type: "mcq", text: "The axial skeleton includes:", options: ["A) Arms and legs", "B) Pelvis only", "C) Skull, ribs, vertebrae", "D) Shoulder girdle only"], correct: 2 },
+  { id: 46, type: "mcq", text: "Hyperplasia differs from hypertrophy because it involves:", options: ["A) Degeneration", "B) Increased cell number", "C) Cell death", "D) Malignancy"], correct: 1 },
+  { id: 47, type: "mcq", text: "A condition in which bone tissue dies is:", options: ["A) Osteitis", "B) Osteomalacia", "C) Osteonecrosis", "D) Osteodynia"], correct: 2 },
+  { id: 48, type: "mcq", text: "The ventricles are separated by the:", options: ["A) Interatrial septum", "B) Pericardium", "C) Interventricular septum", "D) Coronary sinus"], correct: 2 },
+  { id: 49, type: "mcq", text: "Peyer's patches protect against pathogens entering through the:", options: ["A) Respiratory system", "B) Digestive system", "C) Urinary system", "D) Cardiovascular system"], correct: 1 },
+  { id: 50, type: "mcq", text: "Lymphadenitis most commonly indicates:", options: ["A) Malignancy", "B) Trauma", "C) Infection", "D) Degeneration"], correct: 2 }
+];
 
 /* ===================== نظام الصوت المتقدم ===================== */
 const SoundSystem = {
@@ -764,9 +790,8 @@ const SoundSystem = {
       
       switch(type) {
         case 'warning':
-          // صوت تحذيري عالي
-          oscillator.frequency.setValueAtTime(1760, this.audioContext.currentTime); // A6
-          oscillator.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.3); // A5
+          oscillator.frequency.setValueAtTime(1760, this.audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.3);
           gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
           oscillator.start();
@@ -774,13 +799,11 @@ const SoundSystem = {
           break;
           
         case 'violation':
-          // صوت مخالفة صارم جداً وعالي
-          // نغمة إنذار حادة متكررة
           for (let i = 0; i < 3; i++) {
             const time = this.audioContext.currentTime + (i * 0.2);
-            oscillator.frequency.setValueAtTime(2093, time); // C7
-            oscillator.frequency.setValueAtTime(2637, time + 0.1); // E7
-            oscillator.frequency.setValueAtTime(3136, time + 0.2); // G7
+            oscillator.frequency.setValueAtTime(2093, time);
+            oscillator.frequency.setValueAtTime(2637, time + 0.1);
+            oscillator.frequency.setValueAtTime(3136, time + 0.2);
           }
           gainNode.gain.setValueAtTime(0.7, this.audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
@@ -789,11 +812,10 @@ const SoundSystem = {
           break;
           
         case 'timeWarning':
-          // صوت تحذير الوقت - نغمة إنذار قوية
-          oscillator.frequency.setValueAtTime(1318.52, this.audioContext.currentTime); // E6
-          oscillator.frequency.setValueAtTime(1567.98, this.audioContext.currentTime + 0.2); // G6
-          oscillator.frequency.setValueAtTime(1760.00, this.audioContext.currentTime + 0.4); // A6
-          oscillator.frequency.setValueAtTime(2093.00, this.audioContext.currentTime + 0.6); // C7
+          oscillator.frequency.setValueAtTime(1318.52, this.audioContext.currentTime);
+          oscillator.frequency.setValueAtTime(1567.98, this.audioContext.currentTime + 0.2);
+          oscillator.frequency.setValueAtTime(1760.00, this.audioContext.currentTime + 0.4);
+          oscillator.frequency.setValueAtTime(2093.00, this.audioContext.currentTime + 0.6);
           gainNode.gain.setValueAtTime(0.6, this.audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
           oscillator.start();
@@ -824,51 +846,25 @@ const SoundSystem = {
   }
 };
 
-/* ===================== نظام المحاولات المتقدم (مرتبط بـ IP) ===================== */
+/* ===================== نظام المحاولات المبسط ===================== */
 let attempts = {
   current: 1,
   max: MAX_ATTEMPTS,
   history: []
 };
 
-// الحصول على IP فريد للمستخدم
-async function getUserIP() {
-  try {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    // إذا فشل الحصول على IP، استخدم معرف جلسة عشوائي
-    return 'local_' + Math.random().toString(36).substring(7);
-  }
-}
-
-// تحميل المحاولات بناءً على IP
-async function loadAttempts() {
-  const userIP = await getUserIP();
-  const storageKey = `exam_attempts_${userIP}`;
-  const saved = localStorage.getItem(storageKey);
-  
+function loadAttempts() {
+  const saved = localStorage.getItem("exam_attempts");
   if (saved) {
     attempts = JSON.parse(saved);
   } else {
-    attempts = {
-      current: 1,
-      max: MAX_ATTEMPTS,
-      history: [],
-      ip: userIP
-    };
     saveAttempts();
   }
-  
   updateAttemptsDisplay();
-  return userIP;
 }
 
 function saveAttempts() {
-  const userIP = attempts.ip || localStorage.getItem('currentIP') || 'default';
-  const storageKey = `exam_attempts_${userIP}`;
-  localStorage.setItem(storageKey, JSON.stringify(attempts));
+  localStorage.setItem("exam_attempts", JSON.stringify(attempts));
 }
 
 function updateAttemptsDisplay() {
@@ -897,63 +893,7 @@ function resetAttempts() {
   location.reload();
 }
 
-/* ===================== معلومات الموقع والجهاز المتقدمة ===================== */
-async function collectDeviceInfo() {
-  // IP والموقع
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    document.getElementById('ipAddress').textContent = data.ip || 'غير معروف';
-    document.getElementById('location').textContent = 
-      `${data.city || ''} ${data.region || ''} - ${data.country_name || ''}`.trim() || 'غير معروف';
-    
-    // حفظ IP للمحاولات
-    attempts.ip = data.ip;
-    saveAttempts();
-  } catch (error) {
-    document.getElementById('ipAddress').textContent = 'غير متاح';
-    document.getElementById('location').textContent = 'غير متاح';
-  }
-
-  // حالة الاتصال وسرعة الإنترنت
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if (connection) {
-    const type = connection.effectiveType || 'unknown';
-    const speed = connection.downlink ? `${connection.downlink} Mbps` : 'غير معروف';
-    document.getElementById('connectionStatus').textContent = 
-      `متصل (${type}) - ${speed}`;
-    
-    connection.addEventListener('change', () => {
-      document.getElementById('connectionStatus').textContent = 
-        `متصل (${connection.effectiveType}) - ${connection.downlink} Mbps`;
-    });
-  } else {
-    document.getElementById('connectionStatus').textContent = 
-      navigator.onLine ? 'متصل' : 'غير متصل';
-  }
-
-  // سرعة الإنترنت
-  testInternetSpeed();
-
-  // الوقت الحالي
-  updateCurrentTime();
-  setInterval(updateCurrentTime, 1000);
-
-  // معلومات البطارية
-  if (navigator.getBattery) {
-    try {
-      const battery = await navigator.getBattery();
-      updateBatteryInfo(battery);
-      battery.addEventListener('levelchange', () => updateBatteryInfo(battery));
-      battery.addEventListener('chargingchange', () => updateBatteryInfo(battery));
-    } catch (e) {}
-  }
-
-  // معلومات الجهاز
-  const deviceInfo = `${getOS()} - ${getBrowser()} - ${window.screen.width}x${window.screen.height}`;
-  document.getElementById('deviceInfo').textContent = deviceInfo;
-}
-
+/* ===================== معلومات مبسطة ===================== */
 function updateCurrentTime() {
   const now = new Date();
   const options = { 
@@ -969,84 +909,21 @@ function updateCurrentTime() {
   document.getElementById('currentTime').textContent = now.toLocaleString('ar-SA', options);
 }
 
-function updateBatteryInfo(battery) {
-  const level = Math.round(battery.level * 100);
-  const charging = battery.charging ? 'قيد الشحن' : 'غير قيد الشحن';
-  document.getElementById('batteryStatus').textContent = `${level}% - ${charging}`;
+function updateConnectionStatus() {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection) {
+    const type = connection.effectiveType || 'unknown';
+    const speed = connection.downlink ? `${connection.downlink} Mbps` : 'غير معروف';
+    document.getElementById('connectionStatus').textContent = `متصل (${type}) - ${speed}`;
+    
+    connection.addEventListener('change', () => {
+      document.getElementById('connectionStatus').textContent = 
+        `متصل (${connection.effectiveType}) - ${connection.downlink} Mbps`;
+    });
+  } else {
+    document.getElementById('connectionStatus').textContent = navigator.onLine ? 'متصل' : 'غير متصل';
+  }
 }
-
-function getOS() {
-  const ua = navigator.userAgent;
-  if (ua.includes('Windows')) return 'Windows';
-  if (ua.includes('Mac')) return 'macOS';
-  if (ua.includes('Linux')) return 'Linux';
-  if (ua.includes('Android')) return 'Android';
-  if (ua.includes('iOS') || ua.includes('iPhone') || ua.includes('iPad')) return 'iOS';
-  return 'غير معروف';
-}
-
-function getBrowser() {
-  const ua = navigator.userAgent;
-  if (ua.includes('Chrome')) return 'Chrome';
-  if (ua.includes('Firefox')) return 'Firefox';
-  if (ua.includes('Safari')) return 'Safari';
-  if (ua.includes('Edge')) return 'Edge';
-  if (ua.includes('Opera')) return 'Opera';
-  return 'غير معروف';
-}
-
-function testInternetSpeed() {
-  const speedSpan = document.getElementById('speedTest');
-  const startTime = Date.now();
-  const image = new Image();
-  image.onload = function() {
-    const endTime = Date.now();
-    const duration = (endTime - startTime) / 1000;
-    const bitsLoaded = 300000;
-    const speedBps = (bitsLoaded / duration).toFixed(2);
-    const speedKbps = (speedBps / 1024).toFixed(2);
-    const speedMbps = (speedKbps / 1024).toFixed(2);
-    speedSpan.textContent = `سرعة الإنترنت: ${speedMbps} Mbps`;
-  };
-  image.onerror = function() {
-    speedSpan.textContent = 'سرعة الإنترنت: غير متاحة';
-  };
-  image.src = 'https://via.placeholder.com/300x150?text=.' + Date.now();
-}
-
-/* ===================== الأسئلة ===================== */
-let questions = [
-  { id: 1, type: "tf", text: "The highest stage of learning is achieved when the learner is able to recall information accurately.", correct: "خطأ" },
-  { id: 2, type: "tf", text: "Affective domain primarily involves learning by performing motor skills and physical manipulation.", correct: "خطأ" },
-  { id: 3, type: "tf", text: "Gerogogy learners often require structured guidance and frequent encouragement.", correct: "صح" },
-  { id: 4, type: "tf", text: "Literacy assessment should be conducted after implementing the teaching plan.", correct: "خطأ" },
-  { id: 5, type: "tf", text: "Motivation driven by fear of criticism produces optimal long-term learning outcomes.", correct: "خطأ" },
-  { id: 6, type: "tf", text: "Informal teaching requires written objectives and structured evaluation.", correct: "خطأ" },
-  { id: 7, type: "tf", text: "Latex sensitization is a toxic reaction caused by synthetic rubber compounds.", correct: "خطأ" },
-  { id: 8, type: "tf", text: "Carbon monoxide poisoning may present with flu-like symptoms without fever.", correct: "صح" },
-  { id: 9, type: "tf", text: "The RACE protocol prioritizes extinguishing the fire before activating the alarm system.", correct: "خطأ" },
-  { id: 10, type: "tf", text: "Restraints are recommended as an early preventive measure in confused older adults.", correct: "خطأ" },
-  { id: 11, type: "tf", text: "Sleep cycles typically alternate between REM and NREM phases approximately 4–6 times per night.", correct: "صح" },
-  { id: 12, type: "tf", text: "REM sleep is characterized by complete physiologic inactivity and absence of dreams.", correct: "خطأ" },
-  { id: 13, type: "tf", text: "Chronic sleep deprivation may impair wound healing and immune response.", correct: "صح" },
-  { id: 14, type: "tf", text: "Nonverbal communication is generally less revealing than verbal communication.", correct: "خطأ" },
-  { id: 15, type: "tf", text: "Feedback in the communication model is essential to validate message interpretation.", correct: "صح" },
-  { id: 16, type: "mcq", text: "Which of the following best represents independent use of learning?", options: ["A) Identifying information in a textbook", "B) Repeating instructions to another client", "C) Applying instructions without supervision", "D) Recognizing previously taught concepts"], correct: 2 },
-  { id: 17, type: "mcq", text: "A young adult learner is most likely to respond positively to:", options: ["A) Lengthy memorization exercises", "B) Passive lecture-only format", "C) Interactive simulations with immediate feedback", "D) Delayed evaluation and minimal guidance"], correct: 2 },
-  { id: 18, type: "mcq", text: "Which factor most directly affects a client’s readiness to learn?", options: ["A) Nurse’s educational level", "B) Room temperature", "C) Client’s pain level", "D) Hospital policies"], correct: 2 },
-  { id: 19, type: "mcq", text: "The term 'message code' in the communication model refers to:", options: ["A) The emotional tone of speech", "B) The structured arrangement of symbols forming meaning", "C) The feedback provided by the receiver", "D) The sociocultural background of the communicator"], correct: 1 },
-  { id: 20, type: "mcq", text: "Which statement best reflects congruency in communication?", options: ["A) Tone contradicts the spoken message", "B) Gestures reinforce verbal expression", "C) Message lacks emotional context", "D) Receiver ignores feedback"], correct: 1 },
-  { id: 21, type: "mcq", text: "In older adults, falls are most commonly associated with:", options: ["A) Excessive protein intake", "B) Hyperactivity", "C) Gait disturbances and antihypertensive medication", "D) Increased muscle mass"], correct: 2 },
-  { id: 22, type: "mcq", text: "Macro shock differs from micro shock in that it:", options: ["A) Occurs only in pediatric clients", "B) Involves higher electrical current exposure", "C) Is unrelated to grounding equipment", "D) Does not affect cardiac function"], correct: 1 },
-  { id: 23, type: "mcq", text: "The primary physiologic benefit of sleep related to tissue repair is:", options: ["A) Increased sensory alertness", "B) Protein synthesis enhancement", "C) Reduced REM cycles", "D) Elevated blood glucose"], correct: 1 },
-  { id: 24, type: "mcq", text: "Which sleep disorder is characterized by cessation of breathing?", options: ["A) Hypersomnia", "B) Parasomnia", "C) Hypopnea", "D) Sleep apnea"], correct: 3 },
-  { id: 25, type: "mcq", text: "Which is an example of metacommunication?", options: ["A) Writing a nursing report", "B) Raising an eyebrow during a statement", "C) Clarifying the intention behind a previous statement", "D) Administering medication"], correct: 1 },
-  { id: 26, type: "mcq", text: "Effective burn prevention in health institutions requires:", options: ["A) Locked emergency exits", "B) Minimal lighting", "C) Identified and accessible exits", "D) Avoiding fire drills"], correct: 2 },
-  { id: 27, type: "mcq", text: "Which environmental factor contributes most directly to client comfort?", options: ["A) High humidity above 70%", "B) Temperature between 20–23°C", "C) Fluorescent lighting only", "D) Continuous background noise"], correct: 1 },
-  { id: 28, type: "mcq", text: "A crisis learner is most accurately categorized under:", options: ["A) Pedagogy", "B) Androgogy", "C) Gerogogy", "D) Intrapersonal learning"], correct: 0 },
-  { id: 29, type: "mcq", text: "Which nursing action best prevents latex sensitization?", options: ["A) Using oil-based hand creams under gloves", "B) Prolonged glove use", "C) Thorough handwashing after glove removal", "D) Using powdered latex gloves"], correct: 2 },
-  { id: 30, type: "mcq", text: "In the communication model, failure occurs primarily when:", options: ["A) The referent is clear", "B) The channel is appropriate", "C) Feedback is absent or misinterpreted", "D) The message is brief"], correct: 2 }
-];
 
 /* ===================== الحالة (State) ===================== */
 let answers = new Array(TOTAL_QUESTIONS).fill(null);
@@ -1272,25 +1149,20 @@ function updateProgress() {
 function logViolation(type, msg, soundType = 'warning') {
   if (isExamFinished) return;
   
-  // تشغيل الصوت
   SoundSystem.playSound(soundType);
   
-  // تسجيل المخالفة
   cheatLog.events.push({
     t: formatMMSS(Math.floor((Date.now() - examStartedAt) / 1000)),
     type: type,
     message: msg
   });
 
-  // عرض التنبيه
   document.getElementById("alertMsg").textContent = msg;
   document.getElementById("alertOverlay").style.display = "flex";
   
-  // تحديث العداد
   const totalViolations = updateViolationUI();
   saveState();
 
-  // إنهاء الامتحان بعد 3 مخالفات
   if (totalViolations >= AUTO_TERMINATE_AT) {
     setTimeout(() => {
       closeWarning();
@@ -1319,7 +1191,6 @@ function buildStatusGrid() {
     div.id = `qInd${i}`;
     div.className = "q-indicator" + (answers[i] !== null ? " answered" : "");
     div.textContent = i + 1;
-    // تم إزالة onclick لتعطيل التنقل بين الأسئلة
     grid.appendChild(div);
   }
 }
@@ -1443,8 +1314,8 @@ function loadTheme() {
   setTheme(savedTheme);
 }
 
-async function initExam() {
-  await loadAttempts();
+function initExam() {
+  loadAttempts();
   
   if (!canStartExam()) {
     document.body.innerHTML = `
@@ -1452,7 +1323,7 @@ async function initExam() {
         <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 500px;">
           <i class="fas fa-ban" style="font-size: 60px; color: var(--danger); margin-bottom: 20px;"></i>
           <h2 style="color: var(--danger); margin-bottom: 15px;">لقد استنفدت جميع المحاولات</h2>
-          <p style="margin-bottom: 20px;">لا يمكنك بدء امتحان جديد من هذا الجهاز. يرجى التواصل مع المشرف.</p>
+          <p style="margin-bottom: 20px;">لا يمكنك بدء امتحان جديد. يرجى التواصل مع المشرف.</p>
           <button onclick="resetAttempts()" style="padding: 12px 30px; background: var(--gradient-1); color: white; border: none; border-radius: 10px; cursor: pointer;">
             إعادة تعيين المحاولات (للمشرف فقط)
           </button>
@@ -1462,8 +1333,14 @@ async function initExam() {
     return;
   }
   
-  // تشغيل صوت البدء
   SoundSystem.playSound('start');
+  
+  // تحديث الوقت كل ثانية
+  updateCurrentTime();
+  setInterval(updateCurrentTime, 1000);
+  
+  // تحديث حالة الاتصال
+  updateConnectionStatus();
   
   loadState();
   buildStatusGrid();
@@ -1471,14 +1348,12 @@ async function initExam() {
   startTimer();
   updateViolationUI();
   updateProgress();
-  collectDeviceInfo();
 }
 
 function submitExam(isTerminated) {
   if (isExamFinished) return;
   isExamFinished = true;
   
-  // تشغيل صوت النهاية
   SoundSystem.playSound('end');
   
   if (!isTerminated) {
