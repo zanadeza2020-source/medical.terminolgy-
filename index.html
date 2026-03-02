@@ -32,6 +32,7 @@
     --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     --gradient-gold: linear-gradient(135deg, #f5af19 0%, #f12711 100%);
+    --gradient-alarm: linear-gradient(135deg, #ff0000, #8b0000);
     --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
     --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
     --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
@@ -413,7 +414,7 @@
     border: 2px solid transparent;
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
-    pointer-events: none; /* تعطيل التنقل بين الأسئلة */
+    pointer-events: none;
   }
 
   .q-indicator.answered {
@@ -493,7 +494,7 @@
     background: #f5f5f5;
   }
 
-  /* شاشة التنبيه */
+  /* شاشة التنبيه المتطورة */
   .overlay {
     position: fixed;
     inset: 0;
@@ -505,6 +506,12 @@
     align-items: center;
     justify-content: center;
     padding: 15px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   .overlay-content {
@@ -515,8 +522,69 @@
     width: 95%;
     text-align: center;
     border-top: 10px solid var(--danger);
-    animation: shake 0.5s, glow 2s infinite;
+    animation: slideInDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes slideInDown {
+    from {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .overlay-content.warning {
+    border-top-color: var(--warning);
+  }
+
+  .overlay-content.danger {
+    border-top-color: var(--danger);
+  }
+
+  .overlay-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: var(--gradient-gold);
+    width: 100%;
+    animation: progressShrink 5s linear forwards;
+  }
+
+  @keyframes progressShrink {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+
+  /* زر المشاركة */
+  .share-btn {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--border-radius-xl);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 5px;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .share-btn.twitter {
+    background: linear-gradient(135deg, #1DA1F2, #0d8bd9);
   }
 
   /* توقيع المهندس نادر */
@@ -601,6 +669,42 @@
       transform: none;
     }
   }
+
+  /* مؤشر الاهتزاز */
+  .shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+  }
+
+  /* مؤشر الصوت العالي */
+  .high-volume-indicator {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient-alarm);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    z-index: 10001;
+    animation: pulse-alarm 0.5s infinite;
+    box-shadow: 0 0 50px rgba(255,0,0,0.8);
+    border: 3px solid yellow;
+  }
+
+  @keyframes pulse-alarm {
+    0% { transform: translateX(-50%) scale(1); background: #ff0000; }
+    50% { transform: translateX(-50%) scale(1.1); background: #8b0000; }
+    100% { transform: translateX(-50%) scale(1); background: #ff0000; }
+  }
 </style>
 </head>
 
@@ -636,7 +740,7 @@
   </div>
 </div>
 
-<!-- شريط المعلومات المتطور (الوقت + حالة الاتصال + البطارية) -->
+<!-- شريط المعلومات المتطور -->
 <div class="info-bar" id="infoBar">
   <div class="info-item">
     <i class="fas fa-clock"></i>
@@ -660,7 +764,7 @@
 <div class="container">
   <div id="examMain">
     <div id="questionArea"></div>
-    <div class="nav-area">
+    <div class="nav-area" style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
       <button id="nextBtn" class="btn-next" onclick="nextPage()" disabled>
         <i class="fas fa-arrow-left"></i>
         السؤال التالي
@@ -686,21 +790,27 @@
 </div>
 
 <div id="alertOverlay" class="overlay">
-  <div class="overlay-content">
-    <i class="fas fa-skull-crosswalk" style="font-size: min(50px, 10vw); color: var(--danger); margin-bottom: 15px;"></i>
-    <h1 style="color:var(--danger); margin-top:0; font-size: clamp(1.5rem, 5vw, 1.8rem);">🚨 تنبيه مخالفة!</h1>
+  <div class="overlay-content" id="alertContent">
+    <i id="alertIcon" class="fas fa-skull-crosswalk" style="font-size: min(50px, 10vw); color: var(--danger); margin-bottom: 15px;"></i>
+    <h1 id="alertTitle" style="color:var(--danger); margin-top:0; font-size: clamp(1.5rem, 5vw, 1.8rem);">🚨 تنبيه مخالفة!</h1>
     <p id="alertMsg" style="font-size: clamp(1rem, 4vw, 1.2rem); line-height:1.6; margin: 15px 0;"></p>
-    <button class="btn-confirm" onclick="closeWarning()">
+    <div id="alertCountdown" style="font-size: 2rem; font-weight: 900; color: var(--danger); margin: 10px 0;"></div>
+    <button class="btn-confirm" onclick="closeWarning()" id="alertButton">
       <i class="fas fa-check-circle"></i>
       موافق، سألتزم بالقوانين
     </button>
+    <div class="overlay-progress" id="alertProgress"></div>
   </div>
+</div>
+
+<div id="highVolumeIndicator" class="high-volume-indicator" style="display: none;">
+  <i class="fas fa-bell"></i> 🚨 إنذار مخالفة! 🚨 <i class="fas fa-bell"></i>
 </div>
 
 <script>
 /* ===================== الإعدادات الأساسية ===================== */
-const TOTAL_QUESTIONS = 50; // 20 صح/خطأ + 30 اختيار من متعدد
-const Q_PER_PAGE = 2; // سؤالين في كل صفحة (سؤال صح/خطأ + سؤال اختيار من متعدد)
+const TOTAL_QUESTIONS = 50;
+const Q_PER_PAGE = 2;
 const EXAM_TIME_MIN = 30;
 const AUTO_TERMINATE_AT = 3;
 const MAX_ATTEMPTS = 3;
@@ -762,10 +872,14 @@ const questions = [
   { id: 50, type: "mcq", text: "Lymphadenitis most commonly indicates:", options: ["A) Malignancy", "B) Trauma", "C) Infection", "D) Degeneration"], correct: 2 }
 ];
 
-/* ===================== نظام الصوت المتقدم ===================== */
+/* ===================== نظام الصوت العالي والمزعج ===================== */
 const SoundSystem = {
   audioContext: null,
   initialized: false,
+  lastPlayTime: 0,
+  minInterval: 1000, // أقل فترة بين الأصوات (ثانية واحدة)
+  alarmActive: false,
+  alarmInterval: null,
   
   init() {
     try {
@@ -776,7 +890,121 @@ const SoundSystem = {
     }
   },
   
-  async playSound(type) {
+  // صوت زمور عالي جداً ومزعج (مثل سيارة إسعاف)
+  async playLoudAlarm(force = true) {
+    const now = Date.now();
+    if (!force && now - this.lastPlayTime < this.minInterval) {
+      return;
+    }
+    
+    this.lastPlayTime = now;
+    this.alarmActive = true;
+    
+    // إظهار المؤشر المرئي
+    this.showAlarmIndicator();
+    
+    if (!this.initialized) this.init();
+    if (!this.audioContext) return;
+    
+    try {
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+      
+      // إيقاف أي صوت سابق
+      if (this.alarmInterval) {
+        clearInterval(this.alarmInterval);
+      }
+      
+      // إنشاء صوت إنذار متقطع عالي جداً (زي زمور سيارة الإسعاف)
+      const playAlarmSound = () => {
+        const oscillator1 = this.audioContext.createOscillator();
+        const oscillator2 = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        const gainNode2 = this.audioContext.createGain();
+        
+        oscillator1.connect(gainNode);
+        oscillator2.connect(gainNode2);
+        gainNode.connect(this.audioContext.destination);
+        gainNode2.connect(this.audioContext.destination);
+        
+        // صوت عالي جداً (زي صفارة الإنذار)
+        oscillator1.type = 'sawtooth'; // صوت خشن ومزعج
+        oscillator2.type = 'square'; // صوت حاد
+        
+        // ترددات عالية جداً ومتناوبة (زي زمور ambulance)
+        oscillator1.frequency.setValueAtTime(880, this.audioContext.currentTime);
+        oscillator1.frequency.exponentialRampToValueAtTime(1760, this.audioContext.currentTime + 0.2);
+        oscillator1.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.4);
+        
+        oscillator2.frequency.setValueAtTime(1760, this.audioContext.currentTime);
+        oscillator2.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.2);
+        oscillator2.frequency.exponentialRampToValueAtTime(1760, this.audioContext.currentTime + 0.4);
+        
+        // صوت عالي جداً (max volume)
+        gainNode.gain.setValueAtTime(0.9, this.audioContext.currentTime);
+        gainNode2.gain.setValueAtTime(0.8, this.audioContext.currentTime);
+        
+        oscillator1.start();
+        oscillator2.start();
+        oscillator1.stop(this.audioContext.currentTime + 0.5);
+        oscillator2.stop(this.audioContext.currentTime + 0.5);
+      };
+      
+      // تشغيل الصوت بشكل متكرر (كل 500ms) لإنشاء تأثير إنذار مستمر
+      playAlarmSound();
+      this.alarmInterval = setInterval(playAlarmSound, 600);
+      
+      // إيقاف الإنذار تلقائياً بعد 5 ثواني
+      setTimeout(() => {
+        this.stopAlarm();
+      }, 5000);
+      
+    } catch (e) {}
+  },
+  
+  stopAlarm() {
+    if (this.alarmInterval) {
+      clearInterval(this.alarmInterval);
+      this.alarmInterval = null;
+    }
+    this.alarmActive = false;
+    this.hideAlarmIndicator();
+  },
+  
+  showAlarmIndicator() {
+    const indicator = document.getElementById('highVolumeIndicator');
+    if (indicator) {
+      indicator.style.display = 'block';
+      
+      // إضافة تأثير اهتزاز للصفحة
+      document.body.classList.add('shake');
+      
+      // وميض الصفحة باللون الأحمر
+      document.body.style.backgroundColor = '#ff0000';
+      setTimeout(() => {
+        document.body.style.backgroundColor = '';
+      }, 200);
+    }
+  },
+  
+  hideAlarmIndicator() {
+    const indicator = document.getElementById('highVolumeIndicator');
+    if (indicator) {
+      indicator.style.display = 'none';
+      document.body.classList.remove('shake');
+    }
+  },
+  
+  async playSound(type, force = false) {
+    // منع تكرار الصوت بشكل مزعج
+    const now = Date.now();
+    if (!force && now - this.lastPlayTime < this.minInterval) {
+      return;
+    }
+    
+    this.lastPlayTime = now;
+    
     if (!this.initialized) this.init();
     if (!this.audioContext) return;
     
@@ -793,25 +1021,21 @@ const SoundSystem = {
       
       switch(type) {
         case 'warning':
+          oscillator.frequency.setValueAtTime(880, this.audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(440, this.audioContext.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+          oscillator.start();
+          oscillator.stop(this.audioContext.currentTime + 0.2);
+          break;
+          
+        case 'violation':
           oscillator.frequency.setValueAtTime(1760, this.audioContext.currentTime);
           oscillator.frequency.exponentialRampToValueAtTime(880, this.audioContext.currentTime + 0.3);
           gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
           oscillator.start();
           oscillator.stop(this.audioContext.currentTime + 0.3);
-          break;
-          
-        case 'violation':
-          for (let i = 0; i < 3; i++) {
-            const time = this.audioContext.currentTime + (i * 0.2);
-            oscillator.frequency.setValueAtTime(2093, time);
-            oscillator.frequency.setValueAtTime(2637, time + 0.1);
-            oscillator.frequency.setValueAtTime(3136, time + 0.2);
-          }
-          gainNode.gain.setValueAtTime(0.7, this.audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
-          oscillator.start();
-          oscillator.stop(this.audioContext.currentTime + 0.8);
           break;
           
         case 'timeWarning':
@@ -846,6 +1070,129 @@ const SoundSystem = {
           break;
       }
     } catch (e) {}
+  }
+};
+
+/* ===================== نظام التنبيه المتطور ===================== */
+const AlertSystem = {
+  queue: [],
+  isShowing: false,
+  timeoutId: null,
+  
+  async show(message, type = 'danger', duration = 5000) {
+    // إضافة للطابور
+    this.queue.push({ message, type, duration });
+    
+    // إذا كان التنبيه ظاهراً، ننتظر
+    if (this.isShowing) {
+      return;
+    }
+    
+    // عرض التنبيهات بالترتيب
+    await this.processQueue();
+  },
+  
+  async processQueue() {
+    if (this.queue.length === 0) {
+      this.isShowing = false;
+      return;
+    }
+    
+    this.isShowing = true;
+    const alert = this.queue.shift();
+    
+    // عرض التنبيه
+    await this.displayAlert(alert.message, alert.type, alert.duration);
+    
+    // معالجة التنبيه التالي بعد فترة
+    setTimeout(() => {
+      this.processQueue();
+    }, 500);
+  },
+  
+  displayAlert(message, type, duration) {
+    return new Promise((resolve) => {
+      const overlay = document.getElementById('alertOverlay');
+      const content = document.getElementById('alertContent');
+      const icon = document.getElementById('alertIcon');
+      const title = document.getElementById('alertTitle');
+      const msg = document.getElementById('alertMsg');
+      const countdown = document.getElementById('alertCountdown');
+      const button = document.getElementById('alertButton');
+      const progress = document.getElementById('alertProgress');
+      
+      // تخصيص حسب النوع
+      content.className = 'overlay-content ' + type;
+      
+      if (type === 'danger') {
+        icon.style.color = 'var(--danger)';
+        icon.className = 'fas fa-skull-crosswalk';
+        title.style.color = 'var(--danger)';
+        title.textContent = '🚨 تنبيه مخالفة!';
+      } else if (type === 'warning') {
+        icon.style.color = 'var(--warning)';
+        icon.className = 'fas fa-exclamation-triangle';
+        title.style.color = 'var(--warning)';
+        title.textContent = '⚠️ تحذير!';
+      } else if (type === 'info') {
+        icon.style.color = 'var(--info)';
+        icon.className = 'fas fa-info-circle';
+        title.style.color = 'var(--info)';
+        title.textContent = 'ℹ️ تنبيه';
+      }
+      
+      msg.textContent = message;
+      
+      // إضافة عداد تنازلي
+      let timeLeft = duration / 1000;
+      countdown.textContent = `(${timeLeft} ثانية)`;
+      
+      // إعادة تعيين شريط التقدم
+      progress.style.animation = 'none';
+      progress.offsetHeight;
+      progress.style.animation = `progressShrink ${duration / 1000}s linear forwards`;
+      
+      // إلغاء أي مؤقت سابق
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
+      
+      // إظهار التنبيه
+      overlay.style.display = 'flex';
+      
+      // تحديث العداد التنازلي
+      const interval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft >= 0) {
+          countdown.textContent = `(${timeLeft} ثانية)`;
+        }
+      }, 1000);
+      
+      // إغلاق تلقائي بعد المدة
+      this.timeoutId = setTimeout(() => {
+        clearInterval(interval);
+        overlay.style.display = 'none';
+        this.timeoutId = null;
+        resolve();
+      }, duration);
+      
+      // عند الضغط على الزر
+      button.onclick = () => {
+        clearInterval(interval);
+        clearTimeout(this.timeoutId);
+        overlay.style.display = 'none';
+        this.timeoutId = null;
+        resolve();
+      };
+    });
+  },
+  
+  close() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+    document.getElementById('alertOverlay').style.display = 'none';
   }
 };
 
@@ -928,7 +1275,6 @@ function updateConnectionStatus() {
   }
 }
 
-// دالة تحديث البطارية
 async function updateBatteryInfo() {
   if (navigator.getBattery) {
     try {
@@ -939,7 +1285,6 @@ async function updateBatteryInfo() {
         const charging = battery.charging ? 'قيد الشحن' : 'غير قيد الشحن';
         const batterySpan = document.getElementById('batteryStatus');
         
-        // تغيير الأيقونة حسب نسبة الشحن
         const icon = batterySpan.previousElementSibling;
         if (level >= 75) icon.className = 'fas fa-battery-full';
         else if (level >= 50) icon.className = 'fas fa-battery-three-quarters';
@@ -954,7 +1299,6 @@ async function updateBatteryInfo() {
       
       updateBatteryDisplay();
       
-      // مراقبة تغيرات البطارية
       battery.addEventListener('levelchange', updateBatteryDisplay);
       battery.addEventListener('chargingchange', updateBatteryDisplay);
       
@@ -991,6 +1335,8 @@ let isExamFinished = false;
 
 // كشف أدوات المطور
 function detectDevTools() {
+  if (isExamFinished) return;
+  
   const start = performance.now();
   debugger;
   const end = performance.now();
@@ -999,7 +1345,7 @@ function detectDevTools() {
     logViolation("أدوات مطور", "تم كشف فتح أدوات المطور", 'violation');
   }
 }
-setInterval(detectDevTools, 1000);
+setInterval(detectDevTools, 2000);
 
 // كشف مغادرة الصفحة
 document.addEventListener("visibilitychange", () => {
@@ -1009,13 +1355,18 @@ document.addEventListener("visibilitychange", () => {
     cheatLog.tabSwitches++;
     cheatLog.awayStart = Date.now();
     logViolation("مغادرة الصفحة", "تم مغادرة صفحة الامتحان (تبديل التبويب)", 'violation');
-    SoundSystem.playSound('violation');
+    
+    // تشغيل صوت الإنذار العالي والمزعج
+    SoundSystem.playLoudAlarm();
   } else {
     if (cheatLog.awayStart) {
       const awayTime = Math.floor((Date.now() - cheatLog.awayStart) / 1000);
       cheatLog.totalAwayTime += awayTime;
       cheatLog.awayStart = null;
       logViolation("عودة للصفحة", `غبت لمدة ${awayTime} ثانية`, 'warning');
+      
+      // إيقاف الإنذار عند العودة
+      SoundSystem.stopAlarm();
     }
   }
 });
@@ -1023,10 +1374,13 @@ document.addEventListener("visibilitychange", () => {
 // كشف فقدان التركيز
 window.addEventListener("blur", () => {
   if (isExamFinished) return;
+  
   cheatLog.focusLoss++;
   cheatLog.awayStart = Date.now();
   logViolation("فقدان التركيز", "تم النقر خارج الامتحان (ربما فتحت تطبيقاً آخر)", 'violation');
-  SoundSystem.playSound('violation');
+  
+  // تشغيل صوت الإنذار العالي والمزعج
+  SoundSystem.playLoudAlarm();
 });
 
 // كشف محاولة إغلاق النافذة
@@ -1035,49 +1389,58 @@ window.addEventListener("beforeunload", (e) => {
   
   cheatLog.pageExits++;
   logViolation("محاولة خروج", "محاولة إغلاق نافذة الامتحان", 'violation');
-  SoundSystem.playSound('violation');
+  
+  // تشغيل صوت الإنذار العالي والمزعج
+  SoundSystem.playLoudAlarm();
   
   e.preventDefault();
-  e.returnValue = "هل أنت متأكد من الخروج؟ سيتم تسجيل مخالفة وإنهاء الامتحان!";
-  return "هل أنت متأكد من الخروج؟ سيتم تسجيل مخالفة وإنهاء الامتحان!";
+  e.returnValue = "🚨🚨🚨 تحذير! إذا غادرت الامتحان سيتم تسجيل مخالفة وإنهاء الامتحان! 🚨🚨🚨";
+  return "🚨🚨🚨 تحذير! إذا غادرت الامتحان سيتم تسجيل مخالفة وإنهاء الامتحان! 🚨🚨🚨";
 });
 
 // كشف تغيير الرابط
 window.addEventListener("hashchange", (e) => {
   if (isExamFinished) return;
+  
   cheatLog.forbiddenKeys++;
   logViolation("تغيير الرابط", "محاولة تغيير رابط الصفحة", 'violation');
   history.pushState(null, null, window.location.pathname);
+  
+  // تشغيل صوت الإنذار العالي والمزعج
+  SoundSystem.playLoudAlarm();
 });
 
 window.addEventListener("popstate", (e) => {
   if (isExamFinished) return;
+  
   cheatLog.forbiddenKeys++;
   logViolation("تغيير الرابط", "محاولة العودة للصفحة السابقة", 'violation');
   history.pushState(null, null, window.location.pathname);
+  
+  // تشغيل صوت الإنذار العالي والمزعج
+  SoundSystem.playLoudAlarm();
 });
 
 // منع التصوير والتقاط الشاشة
 if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
   const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia;
   navigator.mediaDevices.getDisplayMedia = function() {
+    if (isExamFinished) return originalGetDisplayMedia.apply(this, arguments);
+    
     cheatLog.screenshotAttempts++;
     logViolation("تصوير", "محاولة تصوير الشاشة ممنوعة", 'violation');
-    SoundSystem.playSound('violation');
+    
+    // تشغيل صوت الإنذار العالي والمزعج
+    SoundSystem.playLoudAlarm();
+    
     return Promise.reject(new Error("التصوير ممنوع"));
   };
 }
 
-// منع التشغيل التلقائي
-document.addEventListener('play', function(e) {
-  e.preventDefault();
-  e.target.pause();
-  logViolation("صوت", "تم منع تشغيل الصوت التلقائي", 'warning');
-}, true);
-
 // منع الدخول في وضع ملء الشاشة
 document.addEventListener('fullscreenchange', function() {
   if (isExamFinished) return;
+  
   if (document.fullscreenElement) {
     cheatLog.fullscreenExit++;
     logViolation("ملء الشاشة", "تم الدخول في وضع ملء الشاشة", 'warning');
@@ -1085,26 +1448,10 @@ document.addEventListener('fullscreenchange', function() {
   }
 });
 
-// منع السحب والإفلات
-document.addEventListener('dragstart', function(e) {
-  e.preventDefault();
-  return false;
-});
-
-document.addEventListener('drop', function(e) {
-  e.preventDefault();
-  return false;
-});
-
-// منع القوائم المختصرة
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-  cheatLog.forbiddenKeys++;
-  logViolation("قائمة مختصرة", "محاولة فتح القائمة المختصرة", 'warning');
-});
-
 // منع النسخ
 document.addEventListener("copy", (e) => {
+  if (isExamFinished) return;
+  
   e.preventDefault();
   cheatLog.copyAttempts++;
   logViolation("نسخ", "محاولة نسخ المحتوى ممنوعة", 'warning');
@@ -1129,12 +1476,16 @@ document.addEventListener('keydown', function(e) {
     e.preventDefault();
     cheatLog.refreshAttempts++;
     logViolation("تحديث", "محاولة تحديث الصفحة ممنوعة", 'violation');
-    SoundSystem.playSound('violation');
+    
+    // تشغيل صوت الإنذار العالي والمزعج
+    SoundSystem.playLoudAlarm();
   } else if (forbiddenCombos.some(combo => combo)) {
     e.preventDefault();
     cheatLog.forbiddenKeys++;
     logViolation("مفاتيح ممنوعة", "تم ضغط مفاتيح ممنوعة", 'violation');
-    SoundSystem.playSound('violation');
+    
+    // تشغيل صوت الإنذار العالي والمزعج
+    SoundSystem.playLoudAlarm();
   }
 });
 
@@ -1184,15 +1535,14 @@ function logViolation(type, msg, soundType = 'warning') {
     message: msg
   });
 
-  document.getElementById("alertMsg").textContent = msg;
-  document.getElementById("alertOverlay").style.display = "flex";
+  AlertSystem.show(msg, soundType === 'violation' ? 'danger' : 'warning', 5000);
   
   const totalViolations = updateViolationUI();
   saveState();
 
   if (totalViolations >= AUTO_TERMINATE_AT) {
     setTimeout(() => {
-      closeWarning();
+      AlertSystem.close();
       submitExam(true);
     }, 2000);
   }
@@ -1207,7 +1557,7 @@ function updateViolationUI() {
 }
 
 function closeWarning() {
-  document.getElementById("alertOverlay").style.display = "none";
+  AlertSystem.close();
 }
 
 function buildStatusGrid() {
@@ -1362,14 +1712,10 @@ function initExam() {
   
   SoundSystem.playSound('start');
   
-  // تحديث الوقت كل ثانية
   updateCurrentTime();
   setInterval(updateCurrentTime, 1000);
   
-  // تحديث حالة الاتصال
   updateConnectionStatus();
-  
-  // تحديث البطارية
   updateBatteryInfo();
   
   loadState();
@@ -1380,11 +1726,61 @@ function initExam() {
   updateProgress();
 }
 
+/* ===================== مشاركة النتائج ===================== */
+function shareResult(platform) {
+  const score = document.querySelector('.dashboard-card:first-child div[style*="font-size: 2.5rem"]').textContent;
+  const percentage = document.querySelector('.dashboard-card:first-child div[style*="margin-top: 10px"]').textContent;
+  const text = `📊 نتيجة امتحان المصطلحات الطبية\n✅ النتيجة: ${score}\n📈 النسبة: ${percentage}\n👨‍🏫 برمجة المهندس نادر`;
+  
+  if (platform === 'whatsapp') {
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  } else if (platform === 'twitter') {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+  }
+}
+
+/* ===================== شرح الإجابات ===================== */
+function showExplanation(qIdx) {
+  const explanations = {
+    21: "Chondromalacia هو تليين الغضروف، بينما Chondroma ورم حميد",
+    22: "الطحال (Spleen) يقوم بتصفية الدم وتدمير خلايا الدم الحمراء التالفة",
+    // إضافة المزيد من الشروحات...
+  };
+  
+  const explanation = explanations[qIdx] || "لا يوجد شرح متاح لهذا السؤال";
+  AlertSystem.show(explanation, 'info', 8000);
+}
+
+/* ===================== إحصائيات الأداء ===================== */
+function showPerformanceStats() {
+  const correctCount = answers.filter((ans, i) => {
+    if (questions[i].type === "tf") {
+      return ans === questions[i].correct;
+    } else {
+      return ans == questions[i].correct;
+    }
+  }).length;
+  
+  const wrongCount = answers.filter((ans, i) => ans !== null).length - correctCount;
+  const unansweredCount = answers.filter(ans => ans === null).length;
+  
+  const stats = `
+    📊 إحصائيات الأداء:
+    ✅ الإجابات الصحيحة: ${correctCount}
+    ❌ الإجابات الخاطئة: ${wrongCount}
+    ⏳ لم يجب: ${unansweredCount}
+    📈 نسبة النجاح: ${((correctCount / TOTAL_QUESTIONS) * 100).toFixed(1)}%
+  `;
+  
+  AlertSystem.show(stats, 'info', 10000);
+}
+
 function submitExam(isTerminated) {
   if (isExamFinished) return;
   isExamFinished = true;
   
   SoundSystem.playSound('end');
+  SoundSystem.stopAlarm(); // إيقاف أي إنذار
   
   if (!isTerminated) {
     useAttempt();
@@ -1458,6 +1854,21 @@ function submitExam(isTerminated) {
       </div>
     </div>
 
+    <div style="display: flex; gap: 10px; justify-content: center; margin: 20px 0;">
+      <button class="share-btn" onclick="shareResult('whatsapp')">
+        <i class="fab fa-whatsapp"></i>
+        مشاركة عبر واتساب
+      </button>
+      <button class="share-btn twitter" onclick="shareResult('twitter')">
+        <i class="fab fa-twitter"></i>
+        مشاركة عبر تويتر
+      </button>
+      <button class="share-btn" style="background: var(--gradient-1);" onclick="showPerformanceStats()">
+        <i class="fas fa-chart-line"></i>
+        إحصائيات متقدمة
+      </button>
+    </div>
+
     <div style="background: linear-gradient(135deg, #f5f5f5, #ffffff); padding: 20px; border-radius: var(--border-radius-md); margin: 20px 0;">
       <h3 style="color: var(--primary-dark); margin-bottom: 15px;">
         <i class="fas fa-chart-pie" style="color: var(--gold);"></i>
@@ -1487,6 +1898,7 @@ function submitExam(isTerminated) {
             <th>إجابتك</th>
             <th>الإجابة الصحيحة</th>
             <th>النتيجة</th>
+            <th>شرح</th>
           </tr>
         </thead>
         <tbody>
@@ -1500,6 +1912,11 @@ function submitExam(isTerminated) {
                 ${detail.isCorrect ? 
                   '<i class="fas fa-check-circle" style="color: var(--success);"></i>' : 
                   '<i class="fas fa-times-circle" style="color: var(--danger);"></i>'}
+              </td>
+              <td style="text-align: center;">
+                <button onclick="showExplanation(${i+1})" style="background: var(--info); color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;">
+                  <i class="fas fa-info-circle"></i>
+                </button>
               </td>
             </tr>
           `).join('')}
