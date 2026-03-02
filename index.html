@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -204,7 +203,7 @@
     background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));
   }
 
-  /* شريط المعلومات المبسط */
+  /* شريط المعلومات المتطور */
   .info-bar {
     display: flex;
     flex-wrap: wrap;
@@ -637,7 +636,7 @@
   </div>
 </div>
 
-<!-- شريط المعلومات المبسط (فقط الوقت + حالة الاتصال) -->
+<!-- شريط المعلومات المتطور (الوقت + حالة الاتصال + البطارية) -->
 <div class="info-bar" id="infoBar">
   <div class="info-item">
     <i class="fas fa-clock"></i>
@@ -646,6 +645,10 @@
   <div class="info-item">
     <i class="fas fa-wifi"></i>
     <span id="connectionStatus">جاري فحص الاتصال...</span>
+  </div>
+  <div class="info-item">
+    <i class="fas fa-battery-three-quarters"></i>
+    <span id="batteryStatus">البطارية: جاري الفحص...</span>
   </div>
 </div>
 
@@ -846,7 +849,7 @@ const SoundSystem = {
   }
 };
 
-/* ===================== نظام المحاولات المبسط ===================== */
+/* ===================== نظام المحاولات ===================== */
 let attempts = {
   current: 1,
   max: MAX_ATTEMPTS,
@@ -893,7 +896,7 @@ function resetAttempts() {
   location.reload();
 }
 
-/* ===================== معلومات مبسطة ===================== */
+/* ===================== معلومات الوقت والبطارية والاتصال ===================== */
 function updateCurrentTime() {
   const now = new Date();
   const options = { 
@@ -925,6 +928,44 @@ function updateConnectionStatus() {
   }
 }
 
+// دالة تحديث البطارية
+async function updateBatteryInfo() {
+  if (navigator.getBattery) {
+    try {
+      const battery = await navigator.getBattery();
+      
+      function updateBatteryDisplay() {
+        const level = Math.round(battery.level * 100);
+        const charging = battery.charging ? 'قيد الشحن' : 'غير قيد الشحن';
+        const batterySpan = document.getElementById('batteryStatus');
+        
+        // تغيير الأيقونة حسب نسبة الشحن
+        const icon = batterySpan.previousElementSibling;
+        if (level >= 75) icon.className = 'fas fa-battery-full';
+        else if (level >= 50) icon.className = 'fas fa-battery-three-quarters';
+        else if (level >= 25) icon.className = 'fas fa-battery-half';
+        else if (level >= 10) icon.className = 'fas fa-battery-quarter';
+        else icon.className = 'fas fa-battery-empty';
+        
+        if (battery.charging) icon.className = 'fas fa-battery-bolt';
+        
+        batterySpan.textContent = `${level}% - ${charging}`;
+      }
+      
+      updateBatteryDisplay();
+      
+      // مراقبة تغيرات البطارية
+      battery.addEventListener('levelchange', updateBatteryDisplay);
+      battery.addEventListener('chargingchange', updateBatteryDisplay);
+      
+    } catch (e) {
+      document.getElementById('batteryStatus').textContent = 'البطارية: غير متاحة';
+    }
+  } else {
+    document.getElementById('batteryStatus').textContent = 'البطارية: غير مدعومة';
+  }
+}
+
 /* ===================== الحالة (State) ===================== */
 let answers = new Array(TOTAL_QUESTIONS).fill(null);
 let currentPage = 0;
@@ -936,7 +977,6 @@ let cheatLog = {
   forbiddenKeys: 0,
   devTools: 0,
   fullscreenExit: 0,
-  resizeAttempts: 0,
   copyAttempts: 0,
   totalAwayTime: 0,
   screenshotAttempts: 0,
@@ -1034,19 +1074,6 @@ document.addEventListener('play', function(e) {
   e.target.pause();
   logViolation("صوت", "تم منع تشغيل الصوت التلقائي", 'warning');
 }, true);
-
-// منع تغيير حجم النافذة
-let lastWidth = window.innerWidth;
-let lastHeight = window.innerHeight;
-window.addEventListener('resize', function() {
-  if (isExamFinished) return;
-  const newWidth = window.innerWidth;
-  const newHeight = window.innerHeight;
-  if (Math.abs(newWidth - lastWidth) > 50 || Math.abs(newHeight - lastHeight) > 50) {
-    cheatLog.resizeAttempts++;
-    logViolation("تغيير حجم", "تم تغيير حجم النافذة بشكل ملحوظ", 'warning');
-  }
-});
 
 // منع الدخول في وضع ملء الشاشة
 document.addEventListener('fullscreenchange', function() {
@@ -1342,6 +1369,9 @@ function initExam() {
   // تحديث حالة الاتصال
   updateConnectionStatus();
   
+  // تحديث البطارية
+  updateBatteryInfo();
+  
   loadState();
   buildStatusGrid();
   renderPage();
@@ -1395,7 +1425,6 @@ function submitExam(isTerminated) {
     'مفاتيح ممنوعة': cheatLog.forbiddenKeys,
     'أدوات مطور': cheatLog.devTools,
     'ملء الشاشة': cheatLog.fullscreenExit,
-    'تغيير حجم': cheatLog.resizeAttempts,
     'نسخ': cheatLog.copyAttempts,
     'تصوير': cheatLog.screenshotAttempts,
     'محاولات خروج': cheatLog.pageExits
