@@ -3,43 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Learning Hub - الإصدار المتطور</title>
+<title>Smart Learning Hub - Pro</title>
 
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<!-- ملف التنسيق الخارجي -->
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
-<header id="main-header">
-    <div class="logo">
-        <i class="fas fa-graduation-cap"></i>
-        Smart Learning Hub
-    </div>
-    
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="ابحث في المنصة..." onkeyup="globalSearch(this.value)">
-    </div>
-    
-    <div class="theme-selector">
-        <select onchange="changeTheme(this.value)">
-            <option value="midnight">⚫ Midnight Void (افتراضي)</option>
-            <option value="purple">👑 Royal Purple</option>
-            <option value="emerald">💎 Emerald Ocean</option>
-            <option value="amber">🌅 Sunset Amber</option>
-            <option value="rose">🌸 Rose Quartz</option>
-            <option value="dark">🌌 Dark Nebula</option>
-        </select>
-    </div>
+<header>
+ <div class="logo">
+  <i class="fas fa-graduation-cap"></i> Smart Learning Hub
+ </div>
+
+ <div class="search-bar">
+  <i class="fas fa-search"></i>
+  <input placeholder="ابحث في المساقات..." onkeyup="globalSearch(this.value)">
+ </div>
 </header>
 
 <div class="container" id="main"></div>
 
-<!-- ملف الجافاسكربت الخارجي -->
+<div class="footer">
+    <div class="signature">المهندس نادر</div>
+    <div class="signature-sub">
+        Full Stack Developer | Smart Learning Systems © 2026
+    </div>
+</div>
+
 <script src="app.js"></script>
 
 </body>
