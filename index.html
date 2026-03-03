@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Learning Hub - الإصدار المتطور</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<!-- ربط ملف CSS -->
-<link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Smart Learning Hub - الإصدار المتطور</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ملف الأنماط -->
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header id="main-header">
-    <div class="logo">
-        <i class="fas fa-graduation-cap"></i>
-        Smart Learning Hub
-    </div>
-    
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="ابحث في المنصة..." onkeyup="globalSearch(this.value)">
-    </div>
-    
-    <div class="theme-selector">
-        <select onchange="changeTheme(this.value)">
-            <option value="midnight">⚫ Midnight Void (افتراضي)</option>
-            <option value="purple">👑 Royal Purple</option>
-            <option value="emerald">💎 Emerald Ocean</option>
-            <option value="amber">🌅 Sunset Amber</option>
-            <option value="rose">🌸 Rose Quartz</option>
-            <option value="dark">🌌 Dark Nebula</option>
-        </select>
-    </div>
-</header>
+    <header id="main-header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span class="logo-text">SLH</span>
+        </div>
+        
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="بحث..." onkeyup="globalSearch(this.value)">
+        </div>
+        
+        <div class="menu-container">
+            <div class="menu-button" onclick="toggleMenu()">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+            <div class="menu-dropdown" id="courseMenu">
+                <div class="menu-header">
+                    <i class="fas fa-book-open"></i>
+                    <span>المساقات</span>
+                </div>
+                <div id="menuItems"></div>
+            </div>
+        </div>
+        
+        <div class="theme-selector">
+            <select onchange="changeTheme(this.value)">
+                <option value="midnight">⚫ Void</option>
+                <option value="purple">👑 Royal</option>
+                <option value="emerald">💎 Emerald</option>
+                <option value="amber">🌅 Amber</option>
+                <option value="rose">🌸 Rose</option>
+                <option value="dark">🌌 Nebula</option>
+            </select>
+        </div>
+    </header>
 
-<div class="container" id="main"></div>
+    <div class="container" id="main"></div>
 
-<!-- ربط JS -->
-<script src="./app.js"></script>
+    <!-- عرض معرف الجلسة -->
+    <div class="session-info" id="sessionInfo"></div>
 
+    <!-- ملف JavaScript -->
+    <script src="app.js"></script>
 </body>
 </html>
