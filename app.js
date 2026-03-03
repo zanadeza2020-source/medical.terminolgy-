@@ -1,285 +1,136 @@
-/* ====== جلسة خاصة لكل جهاز ====== */
-if(!sessionStorage.getItem("device_session_id")){
-    sessionStorage.setItem("device_session_id","DEV-"+Math.random().toString(36).substring(2,10));
-}
-const deviceSession = sessionStorage.getItem("device_session_id");
-/* ================================= */
+const courses={
+ med_terms:{title:"مصطلحات طبية",icon:"fa-notes-medical"},
+ gen_chem:{title:"كيمياء عامة",icon:"fa-flask"},
+ gen_bio:{title:"احياء عامة",icon:"fa-dna"},
+ arabic1:{title:"اللغة العربية 1",icon:"fa-language"},
+ intro_nursing:{title:"مقدمة لعلوم التمريض",icon:"fa-user-nurse"},
+ palestine:{title:"القضية الفلسطينيه",icon:"fa-flag"},
+ aqeeda:{title:"العقيده الاسلاميه",icon:"fa-mosque"},
 
-/* ====== تأثير إخفاء وإظهار الهيدر عند التمرير ====== */
-const header = document.getElementById('main-header');
-let lastScrollY = window.scrollY;
-let ticking = false;
-
-function updateHeader() {
-    const currentScrollY = window.scrollY;
-    
-    if (currentScrollY === 0) {
-        header.classList.remove('hidden');
-        header.classList.add('visible');
-    } else if (currentScrollY > lastScrollY) {
-        header.classList.add('hidden');
-        header.classList.remove('visible');
-    } else {
-        header.classList.remove('hidden');
-        header.classList.add('visible');
-    }
-    
-    lastScrollY = currentScrollY;
-    ticking = false;
-}
-
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(updateHeader);
-        ticking = true;
-    }
-});
-
-const courses = {
-    anatomy: {
-        title: "تشريح",
-        icon: "fa-bone",
-        content: {
-            تلخيصات: [
-                { name: "📘 ملخص الجهاز العظمي", icon: "fa-bone" },
-                { name: "📗 ملخص الجهاز العضلي", icon: "fa-muscle" },
-                { name: "📙 ملخص الأعصاب", icon: "fa-brain" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار فصلي - الجهاز العظمي", icon: "fa-pen" },
-                { name: "📝 اختبار نهائي - شامل", icon: "fa-pen-to-square" }
-            ],
-            تقارير: [
-                { name: "📊 تقرير الأداء - الأسبوع الأول", icon: "fa-chart-line" }
-            ],
-            كتب: [
-                { name: "📚 كتاب التشريح الوظيفي", icon: "fa-book" },
-                { name: "📖 أطلس الجسم البشري", icon: "fa-book-open" }
-            ]
-        }
-    },
-    physiology: {
-        title: "فسيولوجي",
-        icon: "fa-heart-pulse",
-        content: {
-            تلخيصات: [
-                { name: "📘 ملخص جهاز الدوران", icon: "fa-heart" },
-                { name: "📗 ملخص الجهاز التنفسي", icon: "fa-lungs" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار منتصف الفصل", icon: "fa-pen" }
-            ],
-            تقارير: [],
-            كتب: [
-                { name: "📚 أساسيات الفسيولوجيا", icon: "fa-book" }
-            ]
-        }
-    },
-    chemistry: {
-        title: "كيمياء",
-        icon: "fa-flask",
-        content: {
-            تلخيصات: [
-                { name: "📘 الكيمياء العضوية", icon: "fa-dna" },
-                { name: "📗 الكيمياء الحيوية", icon: "fa-droplet" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار عملي", icon: "fa-flask" }
-            ],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    biology: {
-        title: "أحياء",
-        icon: "fa-dna",
-        content: {
-            تلخيصات: [
-                { name: "📘 علم الخلية", icon: "fa-microscope" },
-                { name: "📗 الوراثة", icon: "fa-dna" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    skills: {
-        title: "مهارات سريرية",
-        icon: "fa-user-doctor",
-        content: {
-            تلخيصات: [
-                { name: "📘 الفحص السريري", icon: "fa-stethoscope" },
-                { name: "📗 مهارات التواصل", icon: "fa-comments" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار OSCE عملي", icon: "fa-user-doctor" }
-            ],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    nursing1: {
-        title: "تمريض 1",
-        icon: "fa-stethoscope",
-        content: {
-            تلخيصات: [
-                { name: "📘 أساسيات التمريض", icon: "fa-hospital" },
-                { name: "📗 العناية الأساسية", icon: "fa-hand-holding-heart" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    nursing2: {
-        title: "تمريض 2",
-        icon: "fa-briefcase-medical",
-        content: {
-            تلخيصات: [
-                { name: "📘 تمريض الباطنة", icon: "fa-heart" },
-                { name: "📗 تمريض الجراحة", icon: "fa-scalpel" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    }
+ nursing_practical:{title:"أساسيات التمريض عملي 1",icon:"fa-hospital-user"},
+ nursing1:{title:"أساسيات التمريض 1",icon:"fa-stethoscope"},
+ safety:{title:"مبادئ السلامة والأمان",icon:"fa-shield-halved"},
+ microbio:{title:"علم الاحياء الدقيقة العام",icon:"fa-bacteria"},
+ biochem:{title:"كيمياء حيوية طبية",icon:"fa-vial"},
+ quran:{title:"القران الكريم",icon:"fa-book-quran"},
+ anatomy:{title:"علم التشريح ووظائف الاعضاء1",icon:"fa-bone"}
 };
 
-function animatePage(html) {
-    const main = document.getElementById("main");
-    main.innerHTML = `<div class="page">${html}</div>`;
-    setTimeout(() => {
-        const page = document.querySelector(".page");
-        if (page) page.classList.add("show");
-    }, 50);
+function animatePage(html){
+ const main=document.getElementById("main");
+ main.innerHTML=html;
 }
 
-function showDashboard() {
-    let html = "<div class='grid'>";
-    Object.keys(courses).forEach(k => {
-        html += `
-            <div class="card" onclick="openCourse('${k}')">
-                <i class="fas ${courses[k].icon}"></i>
-                <h3>${courses[k].title}</h3>
-            </div>`;
-    });
-    html += "</div>";
-    animatePage(html);
+/* الرئيسية */
+function showDashboard(){
+ animatePage(`
+  <div class="card">
+   <i class="fas fa-user-nurse"></i>
+   <h2>تخصص التمريض - سنة أولى</h2>
+  </div>
+
+  <div class="grid">
+   <div class="card" onclick="openSemester(1)">
+    <i class="fas fa-calendar-alt"></i>
+    <h3>الفصل الأول</h3>
+   </div>
+
+   <div class="card" onclick="openSemester(2)">
+    <i class="fas fa-calendar-check"></i>
+    <h3>الفصل الثاني</h3>
+   </div>
+  </div>
+ `);
 }
 
-function openCourse(key) {
-    let html = `
-        <button class="back-button" onclick="showDashboard()">
-            <i class="fas fa-arrow-right"></i>
-            رجوع للرئيسية
-        </button>
-        <h2 class="course-title">${courses[key].title}</h2>
-        <div class="tabs">
-            <div class="tab active" onclick="showContent('${key}','تلخيصات',this)">
-                <i class="fas fa-book-open"></i> تلخيصات
-            </div>
-            <div class="tab" onclick="showContent('${key}','اختبارات',this)">
-                <i class="fas fa-pen-to-square"></i> اختبارات
-            </div>
-            <div class="tab" onclick="showContent('${key}','تقارير',this)">
-                <i class="fas fa-chart-bar"></i> تقارير
-            </div>
-            <div class="tab" onclick="showContent('${key}','كتب',this)">
-                <i class="fas fa-book"></i> كتب
-            </div>
-        </div>
-        <div id="contentArea"></div>
-    `;
-    animatePage(html);
-    setTimeout(() => {
-        showContent(key, "تلخيصات", document.querySelector(".tab"));
-    }, 100);
+/* الفصول */
+function openSemester(sem){
+
+ const list=sem===1?
+ ["med_terms","gen_chem","gen_bio","arabic1","intro_nursing","palestine","aqeeda"]:
+ ["nursing_practical","nursing1","safety","microbio","biochem","quran","anatomy"];
+
+ let html=`<button class="back-button" onclick="showDashboard()">رجوع</button>
+ <h2 class="course-title">مساقات ${sem===1?"الفصل الأول":"الفصل الثاني"} (${list.length})</h2>
+ <div class="grid">`;
+
+ list.forEach(k=>{
+  html+=`
+  <div class="card" onclick="openCourse('${k}')">
+   <i class="fas ${courses[k].icon}"></i>
+   <h3>${courses[k].title}</h3>
+  </div>`;
+ });
+
+ html+="</div>";
+ animatePage(html);
 }
 
-function showContent(courseKey, type, el) {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    el.classList.add("active");
+/* فتح مساق */
+function openCourse(key){
+ animatePage(`
+  <button class="back-button" onclick="showDashboard()">رجوع</button>
+  <h2 class="course-title">${courses[key].title}</h2>
 
-    const items = courses[courseKey].content[type] || [];
-    let html = "<div class='grid'>";
+  <div class="tabs">
+   <div class="tab active" onclick="switchTab(this,'summaries')">تلخيصات</div>
+   <div class="tab" onclick="switchTab(this,'exams')">اختبارات</div>
+   <div class="tab" onclick="switchTab(this,'reports')">تقارير</div>
+   <div class="tab" onclick="switchTab(this,'books')">كتب</div>
+  </div>
 
-    if (items.length === 0) {
-        html = `
-            <div class="card" style="text-align: center; grid-column: 1/-1;">
-                <i class="fas fa-folder-open" style="font-size: 3rem;"></i>
-                <h3>لا يوجد محتوى حالياً</h3>
-                <p style="color: var(--text-light);">سيتم إضافة محتوى قريباً</p>
-            </div>
-        `;
-    } else {
-        items.forEach(item => {
-            html += `
-                <div class="card" onclick="alert('جاري تجهيز المحتوى: ${item.name}')">
-                    <i class="fas ${item.icon || 'fa-file'}"></i>
-                    <h4>${item.name}</h4>
-                </div>
-            `;
-        });
-    }
-    
-    html += "</div>";
-    document.getElementById("contentArea").innerHTML = `<div class="page show">${html}</div>`;
+  <div id="tabContent"></div>
+ `);
+
+ loadTabContent("summaries");
 }
 
-function globalSearch(val) {
-    val = val.toLowerCase().trim();
-    
-    if (val === "") {
-        showDashboard();
-        return;
-    }
-    
-    let html = "<h2 style='text-align: center; margin-bottom: 2rem;'>نتائج البحث عن: " + val + "</h2>";
-    html += "<div class='grid'>";
-    
-    let found = false;
-    Object.keys(courses).forEach(k => {
-        if (courses[k].title.toLowerCase().includes(val)) {
-            found = true;
-            html += `
-                <div class="card" onclick="openCourse('${k}')">
-                    <i class="fas ${courses[k].icon}"></i>
-                    <h3>${courses[k].title}</h3>
-                </div>`;
-        }
-    });
-    
-    if (!found) {
-        html += `
-            <div class="card" style="grid-column: 1/-1;">
-                <i class="fas fa-search" style="font-size: 3rem;"></i>
-                <h3>لا توجد نتائج</h3>
-                <p>جرب كلمات بحث أخرى</p>
-            </div>
-        `;
-    }
-    
-    html += "</div>";
-    animatePage(html);
+function switchTab(el,type){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ el.classList.add("active");
+ loadTabContent(type);
 }
 
-function changeTheme(theme) {
-    document.body.className = "";
-    if (theme) document.body.classList.add(theme);
-    localStorage.setItem("theme", theme);
+function loadTabContent(type){
+ let content={
+  summaries:["ملخص الوحدة الأولى","ملخص الوحدة الثانية"],
+  exams:["اختبار قصير 1","اختبار منتصف الفصل"],
+  reports:["تقرير عملي 1","تقرير عملي 2"],
+  books:["كتاب المنهج الرسمي","مرجع إضافي"]
+ };
+
+ let html="<div class='grid'>";
+ content[type].forEach(item=>{
+  html+=`<div class="card">${item}</div>`;
+ });
+ html+="</div>";
+
+ document.getElementById("tabContent").innerHTML=html;
 }
 
-window.onload = function() {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.body.classList.add(savedTheme);
-        const select = document.querySelector('.theme-selector select');
-        if (select) select.value = savedTheme;
-    } else {
-        document.body.classList.add('midnight');
-        const select = document.querySelector('.theme-selector select');
-        if (select) select.value = 'midnight';
-    }
-    showDashboard();
+function globalSearch(val){
+ val=val.toLowerCase();
+ if(!val){showDashboard();return;}
+
+ let results=Object.keys(courses).filter(k=>
+  courses[k].title.toLowerCase().includes(val)
+ );
+
+ let html=`<h2 class="course-title">نتائج البحث (${results.length})</h2><div class="grid">`;
+
+ if(results.length===0){
+  html+=`<div class="card">لا توجد نتائج</div>`;
+ }else{
+  results.forEach(k=>{
+   html+=`<div class="card" onclick="openCourse('${k}')">
+    <i class="fas ${courses[k].icon}"></i>
+    <h3>${courses[k].title}</h3>
+   </div>`;
+  });
+ }
+
+ html+="</div>";
+ animatePage(html);
 }
+
+showDashboard();
