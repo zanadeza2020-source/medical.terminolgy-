@@ -1,282 +1,289 @@
-/* ====== جلسة خاصة لكل جهاز ====== */
-if(!sessionStorage.getItem("device_session_id")){
-    sessionStorage.setItem("device_session_id","DEV-"+Math.random().toString(36).substring(2,10));
+/* ====== قاعدة متغيرات الثيمات الفاخرة ====== */
+:root {
+    --primary-gradient: linear-gradient(135deg, #ff00cc, #3333ff);
+    --primary-color: #ff00cc;
+    --bg-gradient: linear-gradient(135deg, #000000, #1a1a1a);
+    --card-bg: rgba(20, 20, 20, 0.9);
+    --text-color: #ffffff;
+    --text-light: #cccccc;
+    --border-glow: rgba(255, 0, 204, 0.4);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --card-blur: blur(10px);
+    --header-blur: blur(12px);
 }
-const deviceSession = sessionStorage.getItem("device_session_id");
-/* ================================= */
 
-/* ====== تأثير إخفاء وإظهار الهيدر عند التمرير ====== */
-const header = document.getElementById('main-header');
-let lastScrollY = window.scrollY;
-let ticking = false;
+/* ثيم Royal Purple */
+body.purple {
+    --primary-gradient: linear-gradient(135deg, #7c3aed, #a78bfa);
+    --primary-color: #7c3aed;
+    --bg-gradient: linear-gradient(135deg, #f3f4f6, #e9e9f0);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-color: #1f2937;
+    --text-light: #6b7280;
+    --border-glow: rgba(124, 58, 237, 0.3);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
-function updateHeader() {
-    const currentScrollY = window.scrollY;
-    
-    if (currentScrollY === 0) {
-        header.classList.remove('hidden');
-        header.classList.add('visible');
-    } else if (currentScrollY > lastScrollY) {
-        header.classList.add('hidden');
-        header.classList.remove('visible');
-    } else {
-        header.classList.remove('hidden');
-        header.classList.add('visible');
+/* ثيم Emerald Ocean */
+body.emerald {
+    --primary-gradient: linear-gradient(135deg, #059669, #34d399);
+    --primary-color: #059669;
+    --bg-gradient: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    --card-bg: rgba(255, 255, 255, 0.75);
+    --text-color: #064e3b;
+    --text-light: #047857;
+    --border-glow: rgba(5, 150, 105, 0.3);
+}
+
+/* ثيم Sunset Amber */
+body.amber {
+    --primary-gradient: linear-gradient(135deg, #d97706, #fbbf24);
+    --primary-color: #d97706;
+    --bg-gradient: linear-gradient(135deg, #fef3c7, #fde68a);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-color: #78350f;
+    --text-light: #b45309;
+    --border-glow: rgba(217, 119, 6, 0.3);
+}
+
+/* ثيم Rose Quartz */
+body.rose {
+    --primary-gradient: linear-gradient(135deg, #e11d48, #fb7185);
+    --primary-color: #e11d48;
+    --bg-gradient: linear-gradient(135deg, #fff1f2, #ffe4e6);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-color: #881337;
+    --text-light: #be123c;
+    --border-glow: rgba(225, 29, 72, 0.3);
+}
+
+/* ثيم Dark Nebula */
+body.dark {
+    --primary-gradient: linear-gradient(135deg, #38bdf8, #818cf8);
+    --primary-color: #38bdf8;
+    --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b);
+    --card-bg: rgba(30, 41, 59, 0.8);
+    --text-color: #f1f5f9;
+    --text-light: #94a3b8;
+    --border-glow: rgba(56, 189, 248, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 100vh;
+    backdrop-filter: var(--card-blur);
+    line-height: 1.6;
+}
+
+/* ====== الهيدر ====== */
+header {
+    background: var(--card-bg);
+    backdrop-filter: var(--header-blur);
+    -webkit-backdrop-filter: var(--header-blur);
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: transform 0.4s ease, background 0.4s;
+}
+
+header.hidden { transform: translateY(-100%); }
+header.visible { transform: translateY(0); }
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px var(--border-glow);
+}
+
+.logo i {
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* البحث */
+.search-bar {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px var(--border-glow);
+}
+
+.search-bar i {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* الثيم */
+.theme-selector select {
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+/* الحاوية */
+.container {
+    width: 100%;
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+}
+
+/* الشبكة */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+}
+
+/* البطاقات */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.4s;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-color);
+}
+
+.card i {
+    font-size: 3rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+}
+
+/* انتقال الصفحات */
+.page {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s;
+}
+
+.page.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* التبويبات */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin: 2rem 0;
+    justify-content: center;
+}
+
+.tab {
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    background: var(--card-bg);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab.active {
+    background: var(--primary-gradient);
+    color: white;
+}
+
+/* زر الرجوع */
+.back-button {
+    background: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+/* عنوان المادة */
+.course-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    header {
+        flex-direction: row;
+        justify-content: space-between;
     }
-    
-    lastScrollY = currentScrollY;
-    ticking = false;
-}
-
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        window.requestAnimationFrame(updateHeader);
-        ticking = true;
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
-});
-
-/* ====== البيانات ====== */
-const courses = {
-    anatomy: {
-        title: "تشريح",
-        icon: "fa-bone",
-        content: {
-            تلخيصات: [
-                { name: "📘 ملخص الجهاز العظمي", icon: "fa-bone" },
-                { name: "📗 ملخص الجهاز العضلي", icon: "fa-muscle" },
-                { name: "📙 ملخص الأعصاب", icon: "fa-brain" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار فصلي - الجهاز العظمي", icon: "fa-pen" },
-                { name: "📝 اختبار نهائي - شامل", icon: "fa-pen-to-square" }
-            ],
-            تقارير: [
-                { name: "📊 تقرير الأداء - الأسبوع الأول", icon: "fa-chart-line" }
-            ],
-            كتب: [
-                { name: "📚 كتاب التشريح الوظيفي", icon: "fa-book" },
-                { name: "📖 أطلس الجسم البشري", icon: "fa-book-open" }
-            ]
-        }
-    },
-    physiology: {
-        title: "فسيولوجي",
-        icon: "fa-heart-pulse",
-        content: {
-            تلخيصات: [
-                { name: "📘 ملخص جهاز الدوران", icon: "fa-heart" },
-                { name: "📗 ملخص الجهاز التنفسي", icon: "fa-lungs" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار منتصف الفصل", icon: "fa-pen" }
-            ],
-            تقارير: [],
-            كتب: [
-                { name: "📚 أساسيات الفسيولوجيا", icon: "fa-book" }
-            ]
-        }
-    },
-    chemistry: {
-        title: "كيمياء",
-        icon: "fa-flask",
-        content: {
-            تلخيصات: [
-                { name: "📘 الكيمياء العضوية", icon: "fa-dna" },
-                { name: "📗 الكيمياء الحيوية", icon: "fa-droplet" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار عملي", icon: "fa-flask" }
-            ],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    biology: {
-        title: "أحياء",
-        icon: "fa-dna",
-        content: {
-            تلخيصات: [
-                { name: "📘 علم الخلية", icon: "fa-microscope" },
-                { name: "📗 الوراثة", icon: "fa-dna" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    skills: {
-        title: "مهارات سريرية",
-        icon: "fa-user-doctor",
-        content: {
-            تلخيصات: [
-                { name: "📘 الفحص السريري", icon: "fa-stethoscope" },
-                { name: "📗 مهارات التواصل", icon: "fa-comments" }
-            ],
-            اختبارات: [
-                { name: "📝 اختبار OSCE عملي", icon: "fa-user-doctor" }
-            ],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    nursing1: {
-        title: "تمريض 1",
-        icon: "fa-stethoscope",
-        content: {
-            تلخيصات: [
-                { name: "📘 أساسيات التمريض", icon: "fa-hospital" },
-                { name: "📗 العناية الأساسية", icon: "fa-hand-holding-heart" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    },
-    nursing2: {
-        title: "تمريض 2",
-        icon: "fa-briefcase-medical",
-        content: {
-            تلخيصات: [
-                { name: "📘 تمريض الباطنة", icon: "fa-heart" },
-                { name: "📗 تمريض الجراحة", icon: "fa-scalpel" }
-            ],
-            اختبارات: [],
-            تقارير: [],
-            كتب: []
-        }
-    }
-};
-
-/* ====== التنقل ====== */
-function animatePage(html) {
-    const main = document.getElementById("main");
-    main.innerHTML = `<div class="page">${html}</div>`;
-    setTimeout(() => {
-        const page = document.querySelector(".page");
-        if (page) page.classList.add("show");
-    }, 50);
 }
 
-function showDashboard() {
-    let html = "<div class='grid'>";
-    Object.keys(courses).forEach(k => {
-        html += `
-            <div class="card" onclick="openCourse('${k}')">
-                <i class="fas ${courses[k].icon}"></i>
-                <h3>${courses[k].title}</h3>
-            </div>`;
-    });
-    html += "</div>";
-    animatePage(html);
+/* Scrollbar */
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: var(--card-bg); }
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 6px;
 }
-
-function openCourse(key) {
-    let html = `
-        <button class="back-button" onclick="showDashboard()">
-            <i class="fas fa-arrow-right"></i>
-            رجوع للرئيسية
-        </button>
-        <h2 class="course-title">${courses[key].title}</h2>
-        <div class="tabs">
-            <div class="tab active" onclick="showContent('${key}','تلخيصات',this)">
-                <i class="fas fa-book-open"></i> تلخيصات
-            </div>
-            <div class="tab" onclick="showContent('${key}','اختبارات',this)">
-                <i class="fas fa-pen-to-square"></i> اختبارات
-            </div>
-            <div class="tab" onclick="showContent('${key}','تقارير',this)">
-                <i class="fas fa-chart-bar"></i> تقارير
-            </div>
-            <div class="tab" onclick="showContent('${key}','كتب',this)">
-                <i class="fas fa-book"></i> كتب
-            </div>
-        </div>
-        <div id="contentArea"></div>
-    `;
-    animatePage(html);
-    setTimeout(() => {
-        showContent(key, "تلخيصات", document.querySelector(".tab"));
-    }, 100);
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
-
-function showContent(courseKey, type, el) {
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    el.classList.add("active");
-
-    const items = courses[courseKey].content[type] || [];
-    let html = "<div class='grid'>";
-
-    if (items.length === 0) {
-        html = `
-            <div class="card" style="grid-column: 1/-1;">
-                <i class="fas fa-folder-open" style="font-size: 3rem;"></i>
-                <h3>لا يوجد محتوى حالياً</h3>
-                <p>سيتم إضافة محتوى قريباً</p>
-            </div>
-        `;
-    } else {
-        items.forEach(item => {
-            html += `
-                <div class="card" onclick="alert('جاري تجهيز المحتوى: ${item.name}')">
-                    <i class="fas ${item.icon || 'fa-file'}"></i>
-                    <h4>${item.name}</h4>
-                </div>
-            `;
-        });
-    }
-
-    html += "</div>";
-    document.getElementById("contentArea").innerHTML = `<div class="page show">${html}</div>`;
-}
-
-function globalSearch(val) {
-    val = val.toLowerCase().trim();
-    if (val === "") { showDashboard(); return; }
-
-    let html = "<div class='grid'>";
-    let found = false;
-
-    Object.keys(courses).forEach(k => {
-        if (courses[k].title.toLowerCase().includes(val)) {
-            found = true;
-            html += `
-                <div class="card" onclick="openCourse('${k}')">
-                    <i class="fas ${courses[k].icon}"></i>
-                    <h3>${courses[k].title}</h3>
-                </div>`;
-        }
-    });
-
-    if (!found) {
-        html += `
-            <div class="card" style="grid-column: 1/-1;">
-                <i class="fas fa-search" style="font-size: 3rem;"></i>
-                <h3>لا توجد نتائج</h3>
-                <p>جرب كلمات بحث أخرى</p>
-            </div>
-        `;
-    }
-
-    html += "</div>";
-    animatePage(html);
-}
-
-function changeTheme(theme) {
-    document.body.className = "";
-    if (theme) document.body.classList.add(theme);
-    localStorage.setItem("theme", theme);
-}
-
-window.onload = function() {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.body.classList.add(savedTheme);
-        const select = document.querySelector('.theme-selector select');
-        if (select) select.value = savedTheme;
-    } else {
-        document.body.classList.add('midnight');
-        const select = document.querySelector('.theme-selector select');
-        if (select) select.value = 'midnight';
-    }
-    showDashboard();
-};
